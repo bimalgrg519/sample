@@ -12,12 +12,15 @@ module.exports = {
       // },
       fontFamily: {
         // Bimal: "'Foo'",
-        sans: ['"FoundryGridnik"'],
+        sans: ['"FoundryGridnik"'], // default font
+        helvetica: "Helvetica",
       },
       colors: {
         ...colors,
         primaryBlue: "#26358B",
         primaryDarkBlue: "#13295C",
+        lightGreen: "#E7FEFB",
+
         // primaryGray: {
         //   100: "#F5F5F5",
         //   200: "#E2E4E6",
