@@ -46,6 +46,14 @@ body {
   @apply bg-primaryBlue text-white;
 }
 
+.btn-full {
+  @apply w-full;
+}
+
 .btn-outline {
   @apply bg-white text-primaryDarkBlue border border-primaryDarkBlue;
+}
+
+.form-label {
+  @apply block text-primaryDarkBlue font-bold mb-1 uppercase text-sm;
 }
