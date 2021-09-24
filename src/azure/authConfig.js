@@ -11,14 +11,15 @@ const isIE = msie > 0 || msie11 > 0;
 const isEdge = msedge > 0;
 const isFirefox = firefox > 0; // Only needed if you need to support the redirect flow in Firefox incognito
 
-const AzureActiveDirectoryAppClientId =
-  process.env.REACT_APP_AZURE_ACTIVE_DIRECTORY_APP_CLIENT_ID;
+const AzureActiveDirectoryAppClientId = "0335b3bf-a2f1-4310-91bf-0758fcfea8d0";
+// const AzureActiveDirectoryAppClientId =
+//   process.env.REACT_APP_AZURE_ACTIVE_DIRECTORY_APP_CLIENT_ID;
 
 // Config object to be passed to Msal on creation
 export const msalConfig = {
   auth: {
     clientId: AzureActiveDirectoryAppClientId,
-    authority: `https://login.microsoftonline.com/common`,
+    authority: `https://login.microsoftonline.com/8472e5fe-3211-4029-9cbb-bbc8ab1dbe72`,
     // authority: 'https://login.windows-ppe.net/common',
     redirectUri: window.location.origin,
     postLogoutRedirectUri: "/",

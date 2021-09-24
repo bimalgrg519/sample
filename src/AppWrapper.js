@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { msalConfig } from "./azure/authConfig";
 import App from "./App";
-// import { Loader } from "./components";
+import { StaticHeader, Header, Loader } from "./components";
 
 const queryClient = new QueryClient();
 
@@ -31,9 +31,12 @@ msalInstance.addEventCallback((event) => {
 
 const InProgressComponent = ({ inProgress }) => {
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center">
-      {/* <Loader /> */}
-      <p className="mt-2 font-semibold">{inProgress} In Progress</p>
+    <div>
+      <StaticHeader />
+      <div className="flex justify-center items-center w-container mx-auto mt-8">
+        <Loader />
+        <p className="ml-4 font-semibold">{inProgress} In Progress</p>
+      </div>
     </div>
   );
 };
@@ -65,31 +68,21 @@ export default function AppWrapper() {
 
   return (
     <BrowserRouter>
+      {/* <ToastProvider> */}
       <QueryClientProvider client={queryClient}>
-        <AppProvider>
-          <App />
-        </AppProvider>
+        <MsalProvider instance={msalInstance}>
+          <MsalAuthenticationTemplate
+            interactionType="redirect"
+            loadingComponent={InProgressComponent}
+            errorComponent={ErrorComponent}
+          >
+            <AppProvider>
+              <App />
+            </AppProvider>
+          </MsalAuthenticationTemplate>
+        </MsalProvider>
       </QueryClientProvider>
+      {/* </ToastProvider> */}
     </BrowserRouter>
   );
-
-  // return (
-  //   <BrowserRouter>
-  //     <ToastProvider>
-  //       <QueryClientProvider client={queryClient}>
-  //         <MsalProvider instance={msalInstance}>
-  //           <MsalAuthenticationTemplate
-  //             interactionType="redirect"
-  //             loadingComponent={InProgressComponent}
-  //             errorComponent={ErrorComponent}
-  //           >
-  //             <AppProvider>
-  //               <App />
-  //             </AppProvider>
-  //           </MsalAuthenticationTemplate>
-  //         </MsalProvider>
-  //       </QueryClientProvider>
-  //     </ToastProvider>
-  //   </BrowserRouter>
-  // );
 }
