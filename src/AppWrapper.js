@@ -70,19 +70,30 @@ export default function AppWrapper() {
     <BrowserRouter>
       {/* <ToastProvider> */}
       <QueryClientProvider client={queryClient}>
-        <MsalProvider instance={msalInstance}>
-          <MsalAuthenticationTemplate
-            interactionType="redirect"
-            loadingComponent={InProgressComponent}
-            errorComponent={ErrorComponent}
-          >
-            <AppProvider>
-              <App />
-            </AppProvider>
-          </MsalAuthenticationTemplate>
-        </MsalProvider>
+        <AppProvider>
+          <App />
+        </AppProvider>
       </QueryClientProvider>
       {/* </ToastProvider> */}
     </BrowserRouter>
   );
+  // return (
+  //   <BrowserRouter>
+  //     {/* <ToastProvider> */}
+  //     <QueryClientProvider client={queryClient}>
+  //       <MsalProvider instance={msalInstance}>
+  //         <MsalAuthenticationTemplate
+  //           interactionType="redirect"
+  //           loadingComponent={InProgressComponent}
+  //           errorComponent={ErrorComponent}
+  //         >
+  //           <AppProvider>
+  //             <App />
+  //           </AppProvider>
+  //         </MsalAuthenticationTemplate>
+  //       </MsalProvider>
+  //     </QueryClientProvider>
+  //     {/* </ToastProvider> */}
+  //   </BrowserRouter>
+  // );
 }

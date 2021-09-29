@@ -16,7 +16,7 @@ const NotFound = () => {
 export default function Routes() {
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
+      <Route path="/" exact component={Dashboard} />
       <Route path="/newEntry" exact component={NewEntry} />
       <Route path="/employeeTimeEntry" exact component={EmployeeTimeEntry} />
       <Route component={NotFound} />

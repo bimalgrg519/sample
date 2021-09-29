@@ -1,15 +1,51 @@
 import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
+import { AiFillCaretDown } from "react-icons/ai";
 
-export default function App() {
+const entriesType = ["OT Entries", "My Time Entries"];
+
+export default function Dashboard() {
+  const [selectedEntriesType, setSelectedEntriesType] = useState(
+    entriesType[0]
+  );
   const [selectedTab, setSelectedTab] = useState("All Entries");
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
   const history = useHistory();
 
   return (
     <div>
-      <div className="flex justify-between">
-        <span className="text-3xl font-bold text-primaryBlue">Dashboard</span>
+      <div className="flex justify-start relative">
+        <div
+          className="flex items-center text-primaryBlue cursor-pointer"
+          onMouseEnter={() => setIsDropdownVisible(true)}
+          onMouseLeave={() => setIsDropdownVisible(false)}
+        >
+          <span className="text-3xl font-bold mr-2">{selectedEntriesType}</span>
+          <AiFillCaretDown size={22} />
+        </div>
+        {isDropdownVisible && (
+          <div
+            className="absolute -bottom-24 bg-white shadow w-60 text-primaryBlue font-medium"
+            onMouseEnter={() => setIsDropdownVisible(true)}
+            onMouseLeave={() => setIsDropdownVisible(false)}
+          >
+            {entriesType.map((type) => (
+              <div
+                className={`px-2 py-3 cursor-pointer ${
+                  selectedEntriesType === type && "bg-blue-50"
+                } border-b border-primaryBlue`}
+                onClick={() => {
+                  setSelectedEntriesType(type);
+                  setIsDropdownVisible(false);
+                }}
+              >
+                {type}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="mt-10">
         <div className="flex justify-between">
