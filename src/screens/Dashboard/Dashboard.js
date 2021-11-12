@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
 import { AiFillCaretDown } from "react-icons/ai";
+import useUserProfile from "../../hooks/useUserProfile";
 
 const entriesType = ["OT Entries", "My Time Entries"];
 
@@ -13,6 +14,8 @@ export default function Dashboard() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const history = useHistory();
+
+  const { employeeNo } = useUserProfile();
 
   return (
     <div>

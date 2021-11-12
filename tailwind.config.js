@@ -11,7 +11,6 @@ module.exports = {
       //   3: "3 3 0%",
       // },
       fontFamily: {
-        // Bimal: "'Foo'",
         sans: ['"FoundryGridnik"'], // default font
         helvetica: "Helvetica",
       },

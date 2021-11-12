@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, useHistory } from "react-router-dom";
-import { AppProvider } from "./AppContext";
+import { AppContextProvider } from "./AppContext";
 import { CustomNavigationClient } from "./utils/CustomNavigationClient";
 import { MsalAuthenticationTemplate, MsalProvider } from "@azure/msal-react";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -66,34 +66,34 @@ export default function AppWrapper() {
   const navigationClient = new CustomNavigationClient(history);
   msalInstance.setNavigationClient(navigationClient);
 
-  return (
-    <BrowserRouter>
-      {/* <ToastProvider> */}
-      <QueryClientProvider client={queryClient}>
-        <AppProvider>
-          <App />
-        </AppProvider>
-      </QueryClientProvider>
-      {/* </ToastProvider> */}
-    </BrowserRouter>
-  );
   // return (
   //   <BrowserRouter>
   //     {/* <ToastProvider> */}
   //     <QueryClientProvider client={queryClient}>
-  //       <MsalProvider instance={msalInstance}>
-  //         <MsalAuthenticationTemplate
-  //           interactionType="redirect"
-  //           loadingComponent={InProgressComponent}
-  //           errorComponent={ErrorComponent}
-  //         >
-  //           <AppProvider>
-  //             <App />
-  //           </AppProvider>
-  //         </MsalAuthenticationTemplate>
-  //       </MsalProvider>
+  //       <AppProvider>
+  //         <App />
+  //       </AppProvider>
   //     </QueryClientProvider>
   //     {/* </ToastProvider> */}
   //   </BrowserRouter>
   // );
+  return (
+    <BrowserRouter>
+      {/* <ToastProvider> */}
+      <QueryClientProvider client={queryClient}>
+        <MsalProvider instance={msalInstance}>
+          <MsalAuthenticationTemplate
+            interactionType="redirect"
+            loadingComponent={InProgressComponent}
+            errorComponent={ErrorComponent}
+          >
+            <AppContextProvider>
+              <App />
+            </AppContextProvider>
+          </MsalAuthenticationTemplate>
+        </MsalProvider>
+      </QueryClientProvider>
+      {/* </ToastProvider> */}
+    </BrowserRouter>
+  );
 }

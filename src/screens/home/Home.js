@@ -1,8 +1,28 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { useContextConsumer } from "../../AppContext";
+import { Loader } from "../../components";
+import useHeaders from "../../hooks/useHeaders";
+
+export const getHours = (d) => {
+  let totalHours = 0;
+  for (let index = 0; index <= 10; index++) {
+    totalHours = totalHours + d[`workedHours_${index}`];
+  }
+  return totalHours;
+};
 
 export default function App() {
   const history = useHistory();
+  const { userCode } = useContextConsumer();
+
+  const { isLoading, data } = useHeaders(
+    `?$filter=employeeCode eq '${userCode}'`
+  );
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div>
@@ -10,12 +30,12 @@ export default function App() {
         <span className="text-3xl font-bold text-primaryBlue">
           My Time Entries
         </span>
-        <button
+        {/* <button
           className="btn btn-primary"
           onClick={() => history.push("newEntry")}
         >
           Add Entry
-        </button>
+        </button> */}
       </div>
       <table className="w-full mt-10 table-fixed shadow">
         <thead>
@@ -27,16 +47,18 @@ export default function App() {
           </tr>
         </thead>
         <tbody>
-          {Array(12)
-            .fill("")
-            .map((d) => (
-              <tr className="even:bg-lightGreen font-helvetica">
-                <td className="py-3 pl-10">18-05-2021</td>
-                <td className="py-3">30 Hrs</td>
-                <td className="py-3">Foo Bar</td>
-                <td className="py-3">Approval waiting</td>
-              </tr>
-            ))}
+          {data.map((d) => (
+            <tr
+              key={d.id}
+              className="even:bg-lightGreen font-helvetica cursor-pointer"
+              onClick={() => history.push("timeEntry", { data: d })}
+            >
+              <td className="py-3 pl-10">{d.startDate}</td>
+              <td className="py-3">{getHours(d)}</td>
+              <td className="py-3">{d.managerCode}</td>
+              <td className="py-3">{d.status}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
