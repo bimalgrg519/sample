@@ -14,11 +14,11 @@ export default function NewEntry() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     state: {
-      data: { id, startDate, endDate, employeeCode, documentNo, site },
+      data: { id, startDate, endDate, employeeCode, documentNo, site, status },
     },
   } = useLocation();
   const history = useHistory();
-  const { setIsAppLoading } = useContextConsumer();
+  const { setIsAppLoading, isManager, userCode } = useContextConsumer();
 
   const [numberOfHoursWorked, setNumberOfHoursWorked] = useState("");
   const [selectedDateWorked, setSelectedDateWorked] = useState("");
@@ -30,7 +30,9 @@ export default function NewEntry() {
     data: linesData,
     refetch: refetchLines,
   } = useLines(
-    `?$filter=employeeCode eq '${employeeCode}' and startDate ge ${startDate} and endDate le ${endDate}`
+    `?$filter=${
+      isManager ? "managerCode" : "employeeCode"
+    } eq '${userCode}' and startDate ge ${startDate} and endDate le ${endDate}`
   );
   const { data: fieldConfigurations } = useFieldConfigurations();
   const { mutate: mutatePostLines } = useMutation(usePostLines, {
@@ -103,7 +105,7 @@ export default function NewEntry() {
   };
 
   const getAllowanceTypeTitle = (entry) => {
-    return fieldConfigurations.find((d) => entry[d.description2])?.description;
+    return fieldConfigurations?.find((d) => entry[d.description2])?.description;
   };
 
   const handleAddNewEntry = () => {
@@ -152,6 +154,19 @@ export default function NewEntry() {
         id,
         body: {
           status: "Pending Approval",
+        },
+      });
+    }
+  };
+
+  const handleApprove = () => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Are you sure you want to approve?")) {
+      setIsAppLoading(true);
+      mutatePatchHeaders({
+        id,
+        body: {
+          status: "Released",
         },
       });
     }
@@ -236,9 +251,19 @@ export default function NewEntry() {
         <span className="text-3xl font-bold text-primaryBlue">
           Weekly Time Entries
         </span>
-        <button className="btn btn-primary" onClick={handleSubmit}>
-          Submit
-        </button>
+        {isManager && status !== "Released" && (
+          <div className="flex items-center">
+            <button className="btn btn-outline mr-4">Reject</button>
+            <button className="btn btn-primary" onClick={handleApprove}>
+              Approve
+            </button>
+          </div>
+        )}
+        {!isManager && status === "Open" && (
+          <button className="btn btn-primary" onClick={handleSubmit}>
+            Submit
+          </button>
+        )}
       </div>
       <table className="w-full mt-10 table-fixed">
         <thead>
@@ -260,15 +285,17 @@ export default function NewEntry() {
           ))}
         </tbody>
       </table>
-      <div
-        className="flex justify-center py-3 mt-2 cursor-pointer font-bold text-sm text-primaryBlue"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%230000004A' stroke-width='2' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
-        }}
-        onClick={() => setIsModalOpen(true)}
-      >
-        ADD TIME ENTRY +
-      </div>
+      {!isManager && status === "Open" && (
+        <div
+          className="flex justify-center py-3 mt-2 cursor-pointer font-bold text-sm text-primaryBlue"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%230000004A' stroke-width='2' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
+          }}
+          onClick={() => setIsModalOpen(true)}
+        >
+          ADD TIME ENTRY +
+        </div>
+      )}
     </div>
   );
 }

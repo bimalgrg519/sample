@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
-import Home from "./screens/Home/Home";
 import Dashboard from "./screens/Dashboard/Dashboard";
-import NewEntry from "./screens/NewEntry/NewEntry";
 import TimeEntry from "./screens/TimeEntry/TimeEntry";
-import EmployeeTimeEntry from "./screens/EmployeeTimeEntry/EmployeeTimeEntry";
 import useEmployees from "./hooks/useEmployees";
 import { useContextConsumer } from "./AppContext";
 import { Loader } from "./components";
+import useWorkSites from "./hooks/useWorkSites";
 
 const NotFound = () => {
   return (
@@ -18,24 +16,38 @@ const NotFound = () => {
 };
 
 export default function Routes() {
-  const { setUserCode } = useContextConsumer();
+  const { setUserCode, setIsManager } = useContextConsumer();
   const [initialLoading, setInitialLoading] = useState(true);
 
-  const { data } = useEmployees(
+  const { data: employees } = useEmployees(
     "?$filter=companyEmail eq 'nabin.neupane@dogmagroup.co.uk'"
+    // "?$filter=companyEmail eq 'bimal.gurung@dogmagroup.co.uk'"
+  );
+
+  const { data: workSites } = useWorkSites(
+    `?$filter= siteManager eq '${employees && employees[0].employeeNo}'`,
+    {
+      enabled: !!employees,
+    }
   );
 
   useEffect(() => {
-    if (data) {
-      const { employeeNo } = data[0];
-      setUserCode(employeeNo);
+    if (workSites) {
+      setIsManager(workSites.length > 0 ? true : false);
       setInitialLoading(false);
     }
-  }, [data, setUserCode]);
+  }, [setIsManager, workSites]);
+
+  useEffect(() => {
+    if (employees) {
+      const { employeeNo } = employees[0];
+      setUserCode(employeeNo);
+    }
+  }, [employees, setUserCode]);
 
   if (initialLoading) {
     return (
-      <div className="w-screen h-screen flex flex-col items-center justify-center">
+      <div className="items-center justify-center flex flex-col">
         <Loader />
         <p className="mt-2 font-semibold">Loading...</p>
       </div>
@@ -44,10 +56,8 @@ export default function Routes() {
 
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
-      <Route path="/newEntry" exact component={NewEntry} />
+      <Route path="/" exact component={Dashboard} />
       <Route path="/timeEntry" exact component={TimeEntry} />
-      <Route path="/employeeTimeEntry" exact component={EmployeeTimeEntry} />
       <Route component={NotFound} />
     </Switch>
   );

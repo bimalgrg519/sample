@@ -7,6 +7,8 @@ export default function Header() {
   const history = useHistory();
   const { pathname } = useLocation();
 
+  console.log(pathname);
+
   return (
     <div className="bg-white border-b border-primaryBlue">
       <div className="mx-auto w-container flex justify-between items-center py-3 relative">

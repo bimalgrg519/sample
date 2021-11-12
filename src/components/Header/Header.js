@@ -21,15 +21,13 @@ export default function Header() {
 
   return (
     <StaticHeader
-      leftComponent={() => {
-        return (
-          pathname.length > 1 && (
-            <div className="cursor-pointer text-primaryDarkBlue ">
-              <IoArrowBack size={26} onClick={() => history.goBack()} />
-            </div>
-          )
-        );
-      }}
+      leftComponent={
+        pathname.length > 1 && (
+          <div className="cursor-pointer text-primaryBlue ">
+            <IoArrowBack size={26} onClick={() => history.goBack()} />
+          </div>
+        )
+      }
     />
   );
   return (
