@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import { useHistory } from "react-router-dom";
 import { AiFillCaretDown } from "react-icons/ai";
 import { useContextConsumer } from "../../AppContext";
 import useHeaders from "../../hooks/useHeaders";
 import { Loader, HeadersTable } from "../../components";
 import { useEffect } from "react/cjs/react.development";
 
-const entriesType = ["OT Entries", "My Time Entries"];
+// const entriesType = ["OT Entries", "My Time Entries"];
 
 export default function Dashboard() {
-  const [selectedEntriesType, setSelectedEntriesType] = useState(
-    entriesType[0]
-  );
+  // const [selectedEntriesType, setSelectedEntriesType] = useState(
+  //   entriesType[0]
+  // );
   const [selectedTab, setSelectedTab] = useState("All Entries");
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  // const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [initialHeaderList, setInitialHeaderList] = useState([]);
   const [headerList, setHeaderList] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const { isManager, userCode } = useContextConsumer();
-  const history = useHistory();
 
   const { isLoading: isLoadingHeaders, data: headersData } = useHeaders(
     `?$filter=${isManager ? "managerCode" : "employeeCode"} eq '${userCode}'`
@@ -28,29 +28,47 @@ export default function Dashboard() {
     if (headersData) {
       if (isManager) {
         if (selectedTab === "Pending") {
-          setHeaderList(
-            headersData.filter((d) => d.status === "Pending Approval")
-          );
+          setData(headersData.filter((d) => d.status === "Pending Approval"));
         } else if (selectedTab === "Approved") {
-          setHeaderList(headersData.filter((d) => d.status === "Released"));
+          setData(headersData.filter((d) => d.status === "Released"));
         } else if (selectedTab === "All Entries") {
-          setHeaderList(headersData);
+          setData(headersData);
         } else {
-          setHeaderList([]);
+          setData([]);
         }
       } else {
-        setHeaderList(headersData);
+        setData(headersData);
       }
     }
   }, [headersData, isManager, selectedTab]);
+
+  const setData = (data) => {
+    setHeaderList(data);
+    setInitialHeaderList(data);
+  };
 
   if (isLoadingHeaders) {
     return <Loader />;
   }
 
+  const handleSearch = (e) => {
+    const text = e.target.value;
+    setSearchText(text);
+    setHeaderList(
+      initialHeaderList.filter((d) =>
+        d.employeeName.toLowerCase().includes(text.toLowerCase())
+      )
+    );
+  };
+
   return (
     <div>
-      {isManager ? (
+      <div className="flex justify-between items-center">
+        <span className="text-3xl font-bold text-primaryBlue">
+          {isManager ? "OT Entries" : "My Time Entries"}
+        </span>
+      </div>
+      {/* {isManager ? (
         <div className="flex justify-start relative">
           <div
             className="flex items-center text-primaryBlue cursor-pointer"
@@ -70,6 +88,7 @@ export default function Dashboard() {
             >
               {entriesType.map((type) => (
                 <div
+                  key={type}
                   className={`px-2 py-3 cursor-pointer ${
                     selectedEntriesType === type && "bg-blue-50"
                   } border-b border-primaryBlue`}
@@ -89,17 +108,11 @@ export default function Dashboard() {
           <span className="text-3xl font-bold text-primaryBlue">
             My Time Entries
           </span>
-          {/* <button
-          className="btn btn-primary"
-          onClick={() => history.push("newEntry")}
-        >
-          Add Entry
-        </button> */}
         </div>
-      )}
+      )} */}
       <div className="mt-10">
         <div className="flex justify-between">
-          {isManager && selectedEntriesType !== entriesType[1] ? (
+          {isManager ? (
             <div className="flex">
               {[
                 {
@@ -130,13 +143,17 @@ export default function Dashboard() {
           ) : (
             <div />
           )}
-          <div className="flex items-center border border-blue-200 h-10 px-4 rounded-sm w-96">
-            <IoSearchOutline size={20} />
-            <input
-              className="w-full h-full focus:outline-none pl-2"
-              placeholder="Search"
-            />
-          </div>
+          {isManager && (
+            <div className="flex items-center border border-blue-200 h-10 px-4 rounded-sm w-96">
+              <IoSearchOutline size={20} />
+              <input
+                className="w-full h-full focus:outline-none pl-2"
+                placeholder="Search"
+                value={searchText}
+                onChange={handleSearch}
+              />
+            </div>
+          )}
         </div>
       </div>
       <HeadersTable data={headerList} />

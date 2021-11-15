@@ -10,7 +10,7 @@ export const getHours = (d) => {
   return totalHours;
 };
 
-export default ({ data }) => {
+export default function HeadersTable({ data }) {
   const history = useHistory();
 
   const { isManager } = useContextConsumer();
@@ -18,11 +18,11 @@ export default ({ data }) => {
   return (
     <table className="w-full table-fixed shadow">
       <thead>
-        <tr className="text-left bg-primaryDarkBlue text-white uppercase">
+        <tr className="bg-primaryDarkBlue text-white uppercase">
           <th className="py-3 pl-10">Start Date</th>
           <th className="py-3 pl-10">End Date</th>
           <th className="py-3">No. Of Hours Worked</th>
-          <th className="py-3">{isManager ? "Employee" : "Manager"}</th>
+          <th className="py-3">{isManager ? "Employee" : "Manager Code"}</th>
           <th className="py-3">Status</th>
         </tr>
       </thead>
@@ -30,7 +30,7 @@ export default ({ data }) => {
         {data.map((d) => (
           <tr
             key={d.id}
-            className="even:bg-lightGreen font-helvetica cursor-pointer"
+            className="even:bg-lightGreen font-helvetica cursor-pointer text-center"
             onClick={() => history.push("timeEntry", { data: d })}
           >
             <td className="py-3 pl-10">{d.startDate}</td>
@@ -39,10 +39,15 @@ export default ({ data }) => {
             <td className="py-3">
               {isManager ? d.employeeName : d.managerCode}
             </td>
-            <td className="py-3">{d.status}</td>
+            <td className="py-3">
+              {d.status}
+              <span className="text-red-600">
+                {d.remarks ? " (Rejected)" : null}
+              </span>
+            </td>
           </tr>
         ))}
       </tbody>
     </table>
   );
-};
+}
