@@ -1,14 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { useContextConsumer } from "../../AppContext";
-
-export const getHours = (d) => {
-  let totalHours = 0;
-  for (let index = 0; index <= 10; index++) {
-    totalHours = totalHours + d[`workedHours_${index}`];
-  }
-  return totalHours;
-};
+import { getHours } from "./TableCommon";
 
 export default function HeadersTable({ data }) {
   const history = useHistory();

@@ -10,6 +10,7 @@ export default function ApproveModal({ isOpen, close, patchHeaders }) {
     close();
     patchHeaders({
       status: "Released",
+      remarks: "",
     });
   };
 

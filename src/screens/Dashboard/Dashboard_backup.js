@@ -3,7 +3,7 @@ import { IoSearchOutline } from "react-icons/io5";
 // import { AiFillCaretDown } from "react-icons/ai";
 import { useContextConsumer } from "../../AppContext";
 import useHeaders from "../../hooks/useHeaders";
-import { Loader, HeadersTable } from "../../components";
+import { Loader, Table } from "../../components";
 import { useEffect } from "react/cjs/react.development";
 
 // const entriesType = ["OT Entries", "My Time Entries"];
@@ -156,7 +156,7 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-      <HeadersTable data={headerList} />
+      <Table data={headerList} />
     </div>
   );
 }
