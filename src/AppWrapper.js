@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { msalConfig } from "./azure/authConfig";
 import App from "./App";
-import { StaticHeader, Header, Loader } from "./components";
+import { StaticHeader, Loader } from "./components";
 
 const queryClient = new QueryClient();
 

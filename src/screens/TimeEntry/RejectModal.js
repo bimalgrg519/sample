@@ -7,12 +7,14 @@ export default function RejectModal({ id, isOpen, close, patchHeaders }) {
   const [rejectReason, setRejectReason] = useState("");
 
   const handleRejectReason = () => {
-    close();
-    setIsAppLoading(true);
-    patchHeaders({
-      status: "Open",
-      remarks: rejectReason,
-    });
+    if (rejectReason) {
+      close();
+      setIsAppLoading(true);
+      patchHeaders({
+        status: "Open",
+        remarks: rejectReason,
+      });
+    }
   };
 
   const closeRejectModal = () => {
@@ -26,7 +28,7 @@ export default function RejectModal({ id, isOpen, close, patchHeaders }) {
       <div style={{ width: 750, marginTop: 40 }}>
         <div className="">
           <label htmlFor="rejectReason" className="form-label">
-            Reason
+            Reason <span className="text-red-700">*</span>
           </label>
           <textarea
             id="rejectReason"
@@ -40,7 +42,12 @@ export default function RejectModal({ id, isOpen, close, patchHeaders }) {
           <button className="btn btn-outline" onClick={closeRejectModal}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleRejectReason}>
+          <button
+            className={`btn btn-primary ${
+              !rejectReason && "opacity-50 cursor-not-allowed"
+            }`}
+            onClick={handleRejectReason}
+          >
             Reject
           </button>
         </div>

@@ -40,10 +40,11 @@ export default function HeadersTable({ data }) {
               {isManager ? d.employeeName : d.managerCode}
             </td>
             <td className="py-3">
-              {d.status}
-              <span className="text-red-600">
-                {d.remarks ? " (Rejected)" : null}
-              </span>
+              {d.remarks ? (
+                <span className="text-red-600">(Rejected)</span>
+              ) : (
+                d.status
+              )}
             </td>
           </tr>
         ))}

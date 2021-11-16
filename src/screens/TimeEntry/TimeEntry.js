@@ -97,12 +97,14 @@ export default function TimeEntry() {
         </span>
         {isManager && status !== "Released" && (
           <div className="flex items-center space-x-2">
-            <button
-              className="btn btn-outline"
-              onClick={() => setIsRejectModalOpen(true)}
-            >
-              Reject
-            </button>
+            {!remarks && (
+              <button
+                className="btn btn-outline"
+                onClick={() => setIsRejectModalOpen(true)}
+              >
+                Reject
+              </button>
+            )}
             <button
               className="btn btn-primary"
               onClick={() => setIsApproveModalOpen(true)}
