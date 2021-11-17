@@ -9,7 +9,13 @@ import AddTimeEntryButton from "./AddTimeEntryButton";
 
 const RemarksMessage = ({ remarks }) =>
   remarks && (
-    <div className="mt-5 bg-red-100 p-4 rounded text-red-900">{remarks}</div>
+    <div className="mt-4">
+      <p className="text-red-900 font-medium">Reason for rejection</p>
+      <div className="bg-red-100 px-4 py-2 rounded text-red-900 text-lg mb-2">
+        {remarks}
+      </div>
+      <p className="text-sm">* Please correct your time entry and resubmit.</p>
+    </div>
   );
 
 export default function TimeEntry() {

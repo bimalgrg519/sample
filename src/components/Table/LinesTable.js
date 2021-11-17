@@ -6,6 +6,9 @@ export default function LinesTable({ data, fieldConfigurations }) {
     return fieldConfigurations?.find((d) => entry[d.description2])?.description;
   };
 
+  // dont show zero hours worked
+  const filteredData = data.filter((d) => getHours(d) > 0);
+
   return (
     <table className="w-full mt-5 table-fixed shadow">
       <thead>
@@ -17,8 +20,11 @@ export default function LinesTable({ data, fieldConfigurations }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((d) => (
-          <tr key={d.id} className="even:bg-lightGreen font-helvetica">
+        {filteredData.map((d) => (
+          <tr
+            key={d.id}
+            className="even:bg-lightGreen font-helvetica cursor-pointer"
+          >
             <td className="py-3 pl-10">{d.startDate}</td>
             <td className="py-3">{getHours(d)}</td>
             <td className="py-3">{getAllowanceTypeTitle(d)}</td>

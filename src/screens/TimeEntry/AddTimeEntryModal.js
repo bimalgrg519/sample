@@ -85,8 +85,9 @@ export default function AddTimeEntryModal({
   };
 
   const handleAddNewEntry = () => {
-    if (!numberOfHoursWorked) {
-      alert("No of hours worked is required.");
+    console.log(typeof numberOfHoursWorked);
+    if (!numberOfHoursWorked || numberOfHoursWorked === 0) {
+      alert("Number of hours worked is required.");
       return;
     } else if (!selectedDateWorked) {
       alert("Date worked is required.");
@@ -123,7 +124,7 @@ export default function AddTimeEntryModal({
   };
 
   return (
-    <Modal isOpen={isOpen} close={close}>
+    <Modal isOpen={isOpen} close={closeAddTimeEntryModal}>
       <p className="text-primaryDarkBlue font-bold text-4xl">Add Entry</p>
       <div style={{ width: 750, marginTop: 40 }}>
         <div className="flex">
@@ -135,7 +136,7 @@ export default function AddTimeEntryModal({
               id="hoursWorked"
               className="appearance-none border border-blue-200 py-2 px-4 rounded-sm w-full"
               value={numberOfHoursWorked}
-              onChange={(e) => setNumberOfHoursWorked(e.target.value)}
+              onChange={(e) => setNumberOfHoursWorked(Number(e.target.value))}
               type="number"
             />
           </div>
