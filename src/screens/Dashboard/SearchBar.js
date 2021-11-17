@@ -10,7 +10,7 @@ export default function SearchBar({ setHeaderList, initialHeaderList }) {
     const text = e.target.value;
     setSearchText(text);
     setHeaderList(
-      initialHeaderList.filter((d) =>
+      initialHeaderList?.filter((d) =>
         d.employeeName.toLowerCase().includes(text.toLowerCase())
       )
     );

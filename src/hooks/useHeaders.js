@@ -8,6 +8,6 @@ const getHeaders = async (filters) => {
   return data.value;
 };
 
-export default function useHeaders(filters) {
-  return useQuery(["headers", filters], () => getHeaders(filters));
+export default function useHeaders(filters, { enabled }) {
+  return useQuery(["headers", filters], () => getHeaders(filters), { enabled });
 }

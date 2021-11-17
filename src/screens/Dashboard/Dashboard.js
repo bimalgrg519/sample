@@ -5,16 +5,45 @@ import { Loader, HeadersTable } from "../../components";
 import Title from "./Title";
 import Tabs from "./Tabs";
 import SearchBar from "./SearchBar";
+import usePayPeriods from "../../hooks/usePayPeriods";
+import PayPeriodsDropdownList from "./PayPeriodsDropdownList";
+import moment from "moment";
+
+const isBetween = (startDate, endDate) => {
+  return (
+    moment().isSameOrAfter(moment(startDate, "YYYY-MM-DD"), "day") &&
+    moment().isSameOrBefore(moment(endDate, "YYYY-MM-DD"), "day")
+  );
+};
 
 export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("All Entries");
-  const [initialHeaderList, setInitialHeaderList] = useState([]);
+  const [selectedPayPeriod, setSelectedPayPeriod] = useState({});
+  const [initialHeaderList, setInitialHeaderList] = useState(null);
   const [headerList, setHeaderList] = useState([]);
 
-  const { isManager, userCode } = useContextConsumer();
+  const { isManager, userCode, setIsAppLoading } = useContextConsumer();
+
+  const { data: payPeriodsData } = usePayPeriods();
 
   const { isLoading: isLoadingHeaders, data: headersData } = useHeaders(
-    `?$filter=${isManager ? "managerCode" : "employeeCode"} eq '${userCode}'`
+    `?$filter=${
+      isManager ? "managerCode" : "employeeCode"
+    } eq '${userCode}' and startDate ge ${
+      selectedPayPeriod.startDate
+    } and endDate le ${selectedPayPeriod.endDate}`,
+    {
+      enabled: !!Object.keys(selectedPayPeriod).length,
+    }
+  );
+
+  const setData = React.useCallback(
+    (data) => {
+      setHeaderList(data);
+      setInitialHeaderList(data);
+      setIsAppLoading(false);
+    },
+    [setIsAppLoading]
   );
 
   useEffect(() => {
@@ -33,21 +62,31 @@ export default function Dashboard() {
         setData(headersData);
       }
     }
-  }, [headersData, isManager, selectedTab]);
+  }, [headersData, isManager, selectedTab, setData]);
 
-  const setData = (data) => {
-    setHeaderList(data);
-    setInitialHeaderList(data);
-  };
+  useEffect(() => {
+    if (payPeriodsData) {
+      setSelectedPayPeriod(
+        payPeriodsData.find(({ startDate, endDate }) =>
+          isBetween(startDate, endDate)
+        )
+      );
+    }
+  }, [payPeriodsData]);
 
-  if (isLoadingHeaders) {
+  if (isLoadingHeaders && !initialHeaderList) {
     return <Loader />;
   }
 
   return (
     <div>
       <Title />
-      <div className="mt-10">
+      <div className="mt-6">
+        <PayPeriodsDropdownList
+          data={payPeriodsData}
+          selectedPayPeriod={selectedPayPeriod}
+          setSelectedPayPeriod={setSelectedPayPeriod}
+        />
         <div className="flex justify-between">
           <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           <SearchBar
