@@ -38,6 +38,7 @@ module.exports = {
     extend: {
       fontWeight: ["hover"],
       backgroundColor: ["active", "even"],
+      visibility: ["group-hover"],
     },
   },
   plugins: [],

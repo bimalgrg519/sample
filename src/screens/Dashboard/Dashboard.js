@@ -74,7 +74,7 @@ export default function Dashboard() {
     }
   }, [payPeriodsData]);
 
-  if (isLoadingHeaders && !initialHeaderList) {
+  if (isLoadingHeaders || !initialHeaderList) {
     return <Loader />;
   }
 

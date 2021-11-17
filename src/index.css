@@ -57,3 +57,24 @@ body {
 .form-label {
   @apply block text-primaryDarkBlue font-bold mb-1 uppercase text-sm;
 }
+
+tbody tr {
+  @apply font-helvetica cursor-pointer text-center;
+}
+
+tbody tr:hover {
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+}
+
+tbody tr:nth-child(even) {
+  @apply bg-lightGreen;
+}
+
+tbody tr:nth-child(odd) {
+  @apply bg-white;
+}
