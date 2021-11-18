@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "..";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import { useContextConsumer } from "../../AppContext";
 import useDeleteLine from "../../hooks/useDeleteLine";
 import { useMutation } from "react-query";
@@ -33,18 +33,12 @@ export default function DeleteTimeEntryModal({
   };
 
   return (
-    <Modal isOpen={isOpen} close={close}>
-      <div style={{ width: 500 }}>
-        <p className="text-xl">Are you sure you want to delete?</p>
-        <div className="space-x-2 mt-5">
-          <button className="btn btn-outline" onClick={close}>
-            Cancel
-          </button>
-          <button className="btn btn-primary" onClick={handleDelete}>
-            Delete
-          </button>
-        </div>
-      </div>
-    </Modal>
+    <ConfirmModal
+      isOpen={isOpen}
+      close={close}
+      title="Are you sure you want to delete?"
+      btnText="Delete"
+      onClickBtn={handleDelete}
+    />
   );
 }

@@ -10,7 +10,7 @@ import useWorkSites from "./hooks/useWorkSites";
 const NotFound = () => {
   return (
     <div className="container pt-6 flex justify-center">
-      <p className="text-lg text-gray-800">Page Not Found</p>
+      <p className="text-lg text-gray-800">404 | Page Not Found</p>
     </div>
   );
 };

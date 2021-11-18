@@ -83,7 +83,7 @@ export default function Dashboard() {
           selectedPayPeriod={selectedPayPeriod}
           setSelectedPayPeriod={setSelectedPayPeriod}
         />
-        <div className="flex justify-between">
+        <div className="flex flex-col md:flex-row justify-between">
           <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           <SearchBar
             initialHeaderList={initialHeaderList}

@@ -21,33 +21,30 @@ export default function RejectModal({ isOpen, close, onSubmit }) {
 
   return (
     <Modal isOpen={isOpen} close={closeRejectModal}>
-      <p className="text-primaryDarkBlue font-bold text-4xl">Reject</p>
-      <div style={{ width: 750, marginTop: 40 }}>
-        <div className="">
-          <label htmlFor="rejectReason" className="form-label">
-            Reason <span className="text-red-700">*</span>
-          </label>
-          <textarea
-            id="rejectReason"
-            value={rejectReason}
-            className="w-full border border-blue-200 p-2"
-            rows={5}
-            onChange={(e) => setRejectReason(e.target.value)}
-          />
-        </div>
-        <div className="space-x-2 mt-5">
-          <button className="btn btn-outline" onClick={closeRejectModal}>
-            Cancel
-          </button>
-          <button
-            className={`btn btn-primary ${
-              !rejectReason && "opacity-50 cursor-not-allowed"
-            }`}
-            onClick={handleRejectReason}
-          >
-            Reject
-          </button>
-        </div>
+      <div className="pt-6">
+        <label htmlFor="rejectReason" className="form-label">
+          Reason of Rejection <span className="text-red-700">*</span>
+        </label>
+        <textarea
+          id="rejectReason"
+          value={rejectReason}
+          className="w-full border border-blue-200 p-2"
+          rows={5}
+          onChange={(e) => setRejectReason(e.target.value)}
+        />
+      </div>
+      <div className="flex space-x-2">
+        <button className="btn btn-outline" onClick={closeRejectModal}>
+          Cancel
+        </button>
+        <button
+          className={`btn btn-primary ${
+            !rejectReason && "opacity-50 cursor-not-allowed"
+          }`}
+          onClick={handleRejectReason}
+        >
+          Reject
+        </button>
       </div>
     </Modal>
   );

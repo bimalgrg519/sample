@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "../../components";
+import { ConfirmModal } from "../../components";
 import { useContextConsumer } from "../../AppContext";
 
 export default function ApproveModal({ isOpen, close, onSubmit }) {
@@ -12,18 +12,12 @@ export default function ApproveModal({ isOpen, close, onSubmit }) {
   };
 
   return (
-    <Modal isOpen={isOpen} close={close}>
-      <div style={{ width: 500 }}>
-        <p className="text-xl">Are you sure you want to approve?</p>
-        <div className="space-x-2 mt-5">
-          <button className="btn btn-outline" onClick={close}>
-            Cancel
-          </button>
-          <button className="btn btn-primary" onClick={handleApprove}>
-            Approve
-          </button>
-        </div>
-      </div>
-    </Modal>
+    <ConfirmModal
+      isOpen={isOpen}
+      close={close}
+      title="Are you sure you want to approve?"
+      btnText="Approve"
+      onClickBtn={handleApprove}
+    />
   );
 }

@@ -21,7 +21,7 @@ const customStyles = {
 export default function MyModal({ isOpen, close, children }) {
   return (
     <Modal isOpen={isOpen} onRequestClose={close} style={customStyles}>
-      <div className="p-2">
+      <div>
         <div className="absolute right-4 cursor-pointer" onClick={close}>
           <IoMdClose size={30} />
         </div>

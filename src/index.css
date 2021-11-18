@@ -39,7 +39,7 @@ body {
 }
 
 .btn {
-  @apply h-12 font-bold w-56 text-lg;
+  @apply h-12 font-bold w-44 sm:w-56 text-base sm:text-lg;
 }
 
 .btn-primary {

@@ -49,7 +49,7 @@ export default function ButtonGroup({ status, remarks, id, linesData }) {
 
   if (status === "Open" && !isManager) {
     return (
-      <>
+      <div className="self-end">
         <SubmitModal
           id={id}
           isOpen={isSubmitModalOpen}
@@ -65,13 +65,13 @@ export default function ButtonGroup({ status, remarks, id, linesData }) {
         >
           Submit
         </button>
-      </>
+      </div>
     );
   }
 
   if (isManager && status !== "Released") {
     return (
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 self-end">
         <RejectModal
           isOpen={isRejectModalOpen}
           close={() => setIsRejectModalOpen(false)}

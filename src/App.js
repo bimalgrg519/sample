@@ -4,10 +4,12 @@ import { Header } from "./components";
 
 export default function App() {
   return (
-    <div className="h-screen w-screen bg-white flex flex-col">
+    <div className="h-screen w-screen bg-white flex flex-col px-1">
       <Header />
-      <div className="w-full md:w-container mx-auto py-2 md:py-10 overflow-auto">
-        <Routes />
+      <div>
+        <div className="max-w-container mx-auto py-6 md:py-10 overflow-auto">
+          <Routes />
+        </div>
       </div>
     </div>
   );

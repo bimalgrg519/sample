@@ -10,7 +10,7 @@ export default function HeadersTable({ data, isSuccess }) {
   const { isManager } = useContextConsumer();
 
   return (
-    <div className="px-1 overflow-x-auto pb-2">
+    <div className="p-1 overflow-x-auto">
       <table className="w-full table-auto shadow whitespace-nowrap">
         <thead>
           <tr className="bg-primaryDarkBlue text-white uppercase text-center">
@@ -29,14 +29,14 @@ export default function HeadersTable({ data, isSuccess }) {
         <tbody>
           {isSuccess && data?.length === 0 ? (
             <tr>
-              <td colspan={5} className="py-3 text-center">
+              <td colSpan={5} className="py-3 text-center">
                 Not Available
               </td>
             </tr>
           ) : null}
           {!isSuccess && data?.length === 0 ? (
             <tr>
-              <td colspan={5} className="py-3 text-center">
+              <td colSpan={5} className="py-3 text-center">
                 <div className="inline-block">
                   <Loader />
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Modal } from "..";
 import { useContextConsumer } from "../../AppContext";
 import { useLocation } from "react-router-dom";
@@ -12,6 +12,7 @@ import {
 } from "./TableCommon";
 import usePatchLines from "../../hooks/usePatchLines";
 import useToasts from "../../hooks/useToasts";
+import { useForm } from "react-hook-form";
 
 export default function AddEditTimeEntryModal({
   isOpen,
@@ -21,6 +22,14 @@ export default function AddEditTimeEntryModal({
 }) {
   const { setIsAppLoading } = useContextConsumer();
   const { successToast, errorToast } = useToasts();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+    setValue,
+  } = useForm();
 
   const {
     state: {
@@ -58,43 +67,33 @@ export default function AddEditTimeEntryModal({
     },
   });
 
-  const [numberOfHoursWorked, setNumberOfHoursWorked] = useState("");
-  const [selectedDateWorked, setSelectedDateWorked] = useState("");
-  const [selectedAllowanceType, setSelectedAllowanceType] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-
   useEffect(() => {
     if (selectedTableRow) {
-      setNumberOfHoursWorked(getHours(selectedTableRow));
-      setSelectedDateWorked(selectedTableRow.startDate);
-      setSelectedAllowanceType(getAllowanceTypeByWorkedHours(selectedTableRow));
-      setProjectDescription(selectedTableRow.remarks);
+      setValue("hoursWorked", getHours(selectedTableRow));
+      setValue("dateWorked", selectedTableRow.startDate);
+      setValue(
+        "allowanceType",
+        getAllowanceTypeByWorkedHours(selectedTableRow)
+      );
+      setValue("projectDescription", selectedTableRow.remarks);
     }
-  }, [selectedTableRow]);
+  }, [selectedTableRow, setValue]);
 
   const resetState = () => {
-    setNumberOfHoursWorked("");
-    setSelectedDateWorked("");
-    setSelectedAllowanceType("");
-    setProjectDescription("");
+    setValue("hoursWorked", "");
+    setValue("dateWorked", "");
+    setValue("allowanceType", "");
+    setValue("projectDescription", "");
   };
 
   const closeModal = () => {
     close();
     resetState();
+    clearErrors();
   };
 
-  const handleAddNewEntry = () => {
-    if (!numberOfHoursWorked || numberOfHoursWorked === 0) {
-      alert("Number of hours worked is required.");
-      return;
-    } else if (!selectedDateWorked) {
-      alert("Date worked is required.");
-      return;
-    } else if (!selectedAllowanceType) {
-      alert("Allowance type is required.");
-      return;
-    }
+  const onSubmit = (data) => {
+    const { hoursWorked, dateWorked, allowanceType, projectDescription } = data;
 
     setIsAppLoading(true);
     closeModal();
@@ -104,144 +103,116 @@ export default function AddEditTimeEntryModal({
       const workedHr = `workedHours_${index}`;
       workedhours = {
         ...workedhours,
-        [workedHr]:
-          selectedAllowanceType === workedHr ? Number(numberOfHoursWorked) : 0,
+        [workedHr]: allowanceType === workedHr ? Number(hoursWorked) : 0,
       };
     }
 
-    const body = {
-      documentNo,
-      employeeCode,
-      startDate: selectedDateWorked,
-      endDate: selectedDateWorked,
-      site,
-      remarks: projectDescription,
-      ...workedhours,
-    };
-
-    mutatePostLines(body);
-  };
-
-  const handleUpdateEntry = () => {
-    if (!numberOfHoursWorked || numberOfHoursWorked === 0) {
-      alert("Number of hours worked is required.");
-      return;
-    } else if (!selectedDateWorked) {
-      alert("Date worked is required.");
-      return;
-    } else if (!selectedAllowanceType) {
-      alert("Allowance type is required.");
-      return;
-    }
-
-    setIsAppLoading(true);
-    closeModal();
-
-    let workedhours = {};
-    for (let index = 0; index <= 10; index++) {
-      const workedHr = `workedHours_${index}`;
-      workedhours = {
+    if (selectedTableRow) {
+      const body = {
+        startDate: dateWorked,
+        endDate: dateWorked,
+        remarks: projectDescription,
         ...workedhours,
-        [workedHr]:
-          selectedAllowanceType === workedHr ? Number(numberOfHoursWorked) : 0,
       };
+      mutatePatchLines({ id: selectedTableRow.id, body });
+    } else {
+      const body = {
+        documentNo,
+        employeeCode,
+        startDate: dateWorked,
+        endDate: dateWorked,
+        site,
+        remarks: projectDescription,
+        ...workedhours,
+      };
+      mutatePostLines(body);
     }
-
-    const body = {
-      startDate: selectedDateWorked,
-      endDate: selectedDateWorked,
-      remarks: projectDescription,
-      ...workedhours,
-    };
-    mutatePatchLines({ id: selectedTableRow.id, body });
   };
 
   return (
     <Modal isOpen={isOpen} close={closeModal}>
       <p className="text-primaryDarkBlue font-bold text-4xl">Add Entry</p>
-      <div style={{ width: 750, marginTop: 40 }}>
-        <div className="flex">
-          <div className="w-1/2 pr-3">
-            <label htmlFor="hoursWorked" className="form-label">
-              Number of hours worked
-            </label>
-            <input
-              id="hoursWorked"
-              className="appearance-none border border-blue-200 py-2 px-4 rounded-sm w-full"
-              value={numberOfHoursWorked}
-              onChange={(e) => setNumberOfHoursWorked(Number(e.target.value))}
-              type="number"
-            />
-          </div>
-          <div className="w-1/2 pl-3">
-            <label htmlFor="dateWorked" className="form-label">
-              Date worked
-            </label>
-            <select
-              id="dateWorked"
-              className="w-full border border-blue-200 py-2 cursor-pointer"
-              value={selectedDateWorked}
-              onChange={(e) => setSelectedDateWorked(e.target.value)}
-            >
-              <option disabled value="">
-                Select Date
-              </option>
-              {getDateWorkedList(startDate, endDate).map((date) => (
-                <option key={date} value={date}>
-                  {date}
-                </option>
-              ))}
-            </select>
-          </div>
+      <form
+        className="mt-4 grid grid-cols-2 gap-4 min-w-xs sm:min-w-xl md:min-w-2xl"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="col-span-2 md:col-span-1">
+          <label htmlFor="hoursWorked" className="form-label">
+            Number of hours worked <span className="text-red-700">*</span>
+          </label>
+          <input
+            id="hoursWorked"
+            className="appearance-none border border-blue-200 py-2 px-4 rounded-sm w-full"
+            type="number"
+            {...register("hoursWorked", { required: "This is required" })}
+          />
+          {errors.hoursWorked && (
+            <span className="text-red-700 font-medium mt-4">
+              {errors.hoursWorked.message}
+            </span>
+          )}
         </div>
-        <div className="w-1/2 pr-3 mt-6">
+        <div className="col-span-2 md:col-span-1">
+          <label htmlFor="dateWorked" className="form-label">
+            Date worked <span className="text-red-700">*</span>
+          </label>
+          <select
+            id="dateWorked"
+            className="w-full border border-blue-200 py-2 cursor-pointer"
+            {...register("dateWorked", { required: "This is required" })}
+          >
+            <option value="">Select Date</option>
+            {getDateWorkedList(startDate, endDate).map((date) => (
+              <option key={date} value={date}>
+                {date}
+              </option>
+            ))}
+          </select>
+          {errors.dateWorked && (
+            <span className="text-red-700 font-medium mt-4">
+              {errors.dateWorked.message}
+            </span>
+          )}
+        </div>
+        <div className="col-span-2 md:col-span-1">
           <label htmlFor="allowanceType" className="form-label">
-            Allowance type
+            Allowance type <span className="text-red-700">*</span>
           </label>
           <select
             id="allowanceType"
             className="w-full border border-blue-200 py-2 cursor-pointer"
-            value={selectedAllowanceType}
-            onChange={(e) => setSelectedAllowanceType(e.target.value)}
+            {...register("allowanceType", { required: "This is required" })}
           >
-            <option disabled value="">
-              Select Allowance Type
-            </option>
+            <option value="">Select Allowance Type</option>
             {fieldConfigurations?.map((d) => (
               <option key={d.id} value={d.description2}>
                 {d.description}
               </option>
             ))}
           </select>
+          {errors.allowanceType && (
+            <span className="text-red-700 font-medium mt-4">
+              {errors.allowanceType.message}
+            </span>
+          )}
         </div>
-        <div className="mt-6">
+        <div className="col-span-2">
           <label htmlFor="projectDescription" className="form-label">
             project Description
           </label>
           <textarea
             id="projectDescription"
-            value={projectDescription}
-            onChange={(e) => setProjectDescription(e.target.value)}
             className="w-full border border-blue-200 p-2"
+            {...register("projectDescription")}
             rows={5}
           />
         </div>
-        {selectedTableRow ? (
-          <button
-            className="btn btn-primary btn-full mt-4"
-            onClick={handleUpdateEntry}
-          >
-            Update Entry
+        <div className="col-span-2">
+          <button className="btn btn-primary btn-full mt-4" type="submit">
+            {selectedTableRow ? "Update" : "Add New"} Entry
           </button>
-        ) : (
-          <button
-            className="btn btn-primary btn-full mt-4"
-            onClick={handleAddNewEntry}
-          >
-            Add New Entry
-          </button>
-        )}
-      </div>
+        </div>
+      </form>
     </Modal>
   );
 }
