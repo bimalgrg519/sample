@@ -8,7 +8,7 @@ import { useMsal } from "@azure/msal-react";
 export const StaticHeader = ({ leftComponent, rightComponent }) => {
   return (
     <div className="bg-white border-b border-primaryBlue">
-      <div className="mx-auto w-container flex justify-between items-center py-3 relative">
+      <div className="w-full mx-auto md:w-container flex justify-between items-center py-3 relative">
         <div className="w-10 h-10 -my-4 flex items-center">{leftComponent}</div>
         <LogoSvg />
         {rightComponent}

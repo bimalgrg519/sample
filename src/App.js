@@ -6,7 +6,7 @@ export default function App() {
   return (
     <div className="h-screen w-screen bg-white flex flex-col">
       <Header />
-      <div className="w-container mx-auto py-10 overflow-auto">
+      <div className="w-full md:w-container mx-auto py-2 md:py-10 overflow-auto">
         <Routes />
       </div>
     </div>

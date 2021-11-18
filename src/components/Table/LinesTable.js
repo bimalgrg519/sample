@@ -24,7 +24,7 @@ export default function LinesTable({ data, refetchLines, status }) {
   const filteredData = data.filter((d) => getHours(d) > 0);
 
   return (
-    <div className="px-1">
+    <div className="px-1 overflow-x-auto">
       <DeleteTimeEntryModal
         isOpen={isDeleteTimeEntryOpen}
         close={() => setIsDeleteTimeEntryOpen(false)}
@@ -37,25 +37,30 @@ export default function LinesTable({ data, refetchLines, status }) {
         selectedTableRow={selectedTableRow}
         refetchLines={refetchLines}
       />
-      <table className="w-full mt-5 table-fixed">
+
+      <table className="w-full mt-5 table-auto md:table-fixed whitespace-nowrap text-center shadow">
         <thead>
-          <tr className="text-left bg-primaryDarkBlue text-white uppercase">
-            <th className="py-3 pl-10">Date</th>
-            <th className="py-3">No. Of Hours Worked</th>
-            <th className="py-3">Allowance Type</th>
-            <th className="py-3">Project Description Of Work</th>
+          <tr className=" bg-primaryDarkBlue text-white uppercase">
+            <th className=" py-2 md:py-3 px-3 md:px-0">Date</th>
+            <th className="hidden md:block py-3 px-0">No. of Hours Worked</th>
+            <th className="md:hidden block px-3 py-2">Hours Worked</th>
+            <th className="py-2 md:py-3 px-3 md:px-0">Allowance Type</th>
+            <th className="hidden md:block py-3 px-0">
+              Project Description of Work
+            </th>
+            <th className="block md:hidden py-2 px-3">Work Description</th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((d) => (
-            <tr
-              key={d.id}
-              className="even:bg-lightGreen font-helvetica text-center group"
-            >
-              <td className="py-3 pl-10">{d.startDate}</td>
-              <td className="py-3">{getHours(d)}</td>
-              <td className="py-3">{getAllowanceTypeTitle(d)}</td>
-              <td className="py-3 relative">
+            <tr key={d.id} className="even:bg-lightGreen font-helvetica">
+              <td className="py-2 md:py-3 px-3 md:px-0">{d.startDate}</td>
+              <td className="py-2 px-3">{getHours(d)}</td>
+              <td className="py-2 md:py-3 px-3 md:px-0">
+                {getAllowanceTypeTitle(d)}
+              </td>
+              <td className="hidden md:block py-3 px-0">{d.remarks}</td>
+              <td className="block md:hidden py-2 px-3">
                 {d.remarks}
                 {(!isManager && status === "Open") ||
                 (isManager && status === "Pending Approval") ? (

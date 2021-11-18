@@ -44,11 +44,13 @@ export default function TimeEntry() {
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex flex-col space-y-2 md:space-y-0 md:flex-row justify-between text-center md:text-left">
         <span className="text-3xl font-bold text-primaryBlue">
           Weekly Time Entries
         </span>
-        <ButtonGroup status={status} remarks={remarks} id={id} />
+        <div className="text-center">
+          <ButtonGroup status={status} remarks={remarks} id={id} />
+        </div>
       </div>
       <RemarksMessage remarks={remarks} />
       <LinesTable

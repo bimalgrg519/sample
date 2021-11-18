@@ -18,7 +18,7 @@ export default function SubmitModal({ isOpen, close, id, patchHeaders }) {
     <Modal isOpen={isOpen} close={close}>
       <div style={{ width: 500 }}>
         <p className="text-xl">Are you sure you want to submit?</p>
-        <div className="space-x-2 mt-5">
+        <div className="flex space-x-2 mt-5">
           <button className="btn btn-outline" onClick={close}>
             Cancel
           </button>
