@@ -2,7 +2,6 @@ import React from "react";
 import { Loader, LinesTable } from "../../components";
 import useLines from "../../hooks/useLines";
 import { useLocation } from "react-router-dom";
-import useFieldConfigurations from "../../hooks/useFieldConfigurations";
 import { useContextConsumer } from "../../AppContext";
 import ButtonGroup from "./ButtonGroup";
 import AddTimeEntryButton from "./AddTimeEntryButton";
@@ -38,7 +37,6 @@ export default function TimeEntry() {
       isManager ? managerFilterUrl : employeeFilterUrl
     } and startDate ge ${startDate} and endDate le ${endDate}`
   );
-  const { data: fieldConfigurations } = useFieldConfigurations();
 
   if (isLoadingLines) {
     return <Loader />;
@@ -53,12 +51,12 @@ export default function TimeEntry() {
         <ButtonGroup status={status} remarks={remarks} id={id} />
       </div>
       <RemarksMessage remarks={remarks} />
-      <LinesTable fieldConfigurations={fieldConfigurations} data={linesData} />
-      <AddTimeEntryButton
-        status={status}
-        fieldConfigurations={fieldConfigurations}
+      <LinesTable
+        data={linesData}
         refetchLines={refetchLines}
+        status={status}
       />
+      <AddTimeEntryButton status={status} refetchLines={refetchLines} />
     </div>
   );
 }

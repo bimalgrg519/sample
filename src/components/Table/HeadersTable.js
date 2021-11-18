@@ -25,6 +25,7 @@ export default function HeadersTable({ data }) {
             <tr
               key={d.id}
               onClick={() => history.push("timeEntry", { data: d })}
+              className="even:bg-lightGreen font-helvetica cursor-pointer text-center"
             >
               <td className="py-3 pl-10">{d.startDate}</td>
               <td className="py-3 pl-10">{d.endDate}</td>

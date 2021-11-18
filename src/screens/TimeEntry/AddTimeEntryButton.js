@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import { useContextConsumer } from "../../AppContext";
-import AddTimeEntryModal from "./AddTimeEntryModal";
+import AddEditTimeEntryModal from "../../components/Table/AddEditTimeEntryModal";
 
-export default function AddTimeEntryButton({
-  status,
-  fieldConfigurations,
-  refetchLines,
-}) {
+export default function AddTimeEntryButton({ status, refetchLines }) {
   const { isManager } = useContextConsumer();
 
   const [isAddTimeEntryModalOpen, setIsTimeEntryModalOpen] = useState(false);
@@ -14,10 +10,9 @@ export default function AddTimeEntryButton({
   if (!isManager && status === "Open")
     return (
       <>
-        <AddTimeEntryModal
+        <AddEditTimeEntryModal
           isOpen={isAddTimeEntryModalOpen}
           close={() => setIsTimeEntryModalOpen(false)}
-          fieldConfigurations={fieldConfigurations}
           refetchLines={refetchLines}
         />
         <div

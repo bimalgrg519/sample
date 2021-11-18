@@ -1,16 +1,22 @@
-import React, { useState } from "react";
-import { Modal } from "../../components";
-import moment from "moment";
+import React, { useState, useEffect } from "react";
+import { Modal } from "..";
 import { useContextConsumer } from "../../AppContext";
 import { useLocation } from "react-router-dom";
 import usePostLines from "../../hooks/usePostLines";
 import { useMutation } from "react-query";
+import useFieldConfigurations from "../../hooks/useFieldConfigurations";
+import {
+  getHours,
+  getAllowanceTypeByWorkedHours,
+  getDateWorkedList,
+} from "./TableCommon";
+import usePatchLines from "../../hooks/usePatchLines";
 
-export default function AddTimeEntryModal({
+export default function AddEditTimeEntryModal({
   isOpen,
   close,
-  fieldConfigurations,
   refetchLines,
+  selectedTableRow,
 }) {
   const { setIsAppLoading } = useContextConsumer();
 
@@ -20,7 +26,21 @@ export default function AddTimeEntryModal({
     },
   } = useLocation();
 
+  const { data: fieldConfigurations } = useFieldConfigurations();
+
   const { mutate: mutatePostLines } = useMutation(usePostLines, {
+    onSuccess: () => {
+      setIsAppLoading(false);
+      resetState();
+      refetchLines();
+    },
+    onError: () => {
+      setIsAppLoading(false);
+      alert("Something went wrong.");
+    },
+  });
+
+  const { mutate: mutatePatchLines } = useMutation(usePatchLines, {
     onSuccess: () => {
       setIsAppLoading(false);
       resetState();
@@ -37,6 +57,15 @@ export default function AddTimeEntryModal({
   const [selectedAllowanceType, setSelectedAllowanceType] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
 
+  useEffect(() => {
+    if (selectedTableRow) {
+      setNumberOfHoursWorked(getHours(selectedTableRow));
+      setSelectedDateWorked(selectedTableRow.startDate);
+      setSelectedAllowanceType(getAllowanceTypeByWorkedHours(selectedTableRow));
+      setProjectDescription(selectedTableRow.remarks);
+    }
+  }, [selectedTableRow]);
+
   const resetState = () => {
     setNumberOfHoursWorked("");
     setSelectedDateWorked("");
@@ -44,48 +73,12 @@ export default function AddTimeEntryModal({
     setProjectDescription("");
   };
 
-  const closeAddTimeEntryModal = () => {
+  const closeModal = () => {
     close();
     resetState();
   };
 
-  const getDateWorked = () => {
-    let dateWorked = [];
-
-    const start = moment(startDate, "YYYY-MM-DD");
-    const end = moment(endDate, "YYYY-MM-DD");
-
-    const diff = end.diff(start, "days");
-
-    for (let index = 0; index <= diff; index++) {
-      const formatedDay = moment(startDate, "YYYY-MM-DD")
-        .clone()
-        .add(index, "day")
-        .format("YYYY-MM-DD");
-
-      const dom = (
-        <option key={formatedDay} value={formatedDay}>
-          {formatedDay}
-        </option>
-      );
-      dateWorked.push(dom);
-    }
-
-    return dateWorked;
-  };
-
-  const getAllowanceType = () => {
-    return fieldConfigurations?.map((d) => {
-      return (
-        <option key={d.id} value={d.description2}>
-          {d.description}
-        </option>
-      );
-    });
-  };
-
   const handleAddNewEntry = () => {
-    console.log(typeof numberOfHoursWorked);
     if (!numberOfHoursWorked || numberOfHoursWorked === 0) {
       alert("Number of hours worked is required.");
       return;
@@ -98,7 +91,7 @@ export default function AddTimeEntryModal({
     }
 
     setIsAppLoading(true);
-    closeAddTimeEntryModal();
+    closeModal();
 
     let workedhours = {};
     for (let index = 0; index <= 10; index++) {
@@ -123,8 +116,42 @@ export default function AddTimeEntryModal({
     mutatePostLines(body);
   };
 
+  const handleUpdateEntry = () => {
+    if (!numberOfHoursWorked || numberOfHoursWorked === 0) {
+      alert("Number of hours worked is required.");
+      return;
+    } else if (!selectedDateWorked) {
+      alert("Date worked is required.");
+      return;
+    } else if (!selectedAllowanceType) {
+      alert("Allowance type is required.");
+      return;
+    }
+
+    setIsAppLoading(true);
+    closeModal();
+
+    let workedhours = {};
+    for (let index = 0; index <= 10; index++) {
+      const workedHr = `workedHours_${index}`;
+      workedhours = {
+        ...workedhours,
+        [workedHr]:
+          selectedAllowanceType === workedHr ? Number(numberOfHoursWorked) : 0,
+      };
+    }
+
+    const body = {
+      startDate: selectedDateWorked,
+      endDate: selectedDateWorked,
+      remarks: projectDescription,
+      ...workedhours,
+    };
+    mutatePatchLines({ id: selectedTableRow.id, body });
+  };
+
   return (
-    <Modal isOpen={isOpen} close={closeAddTimeEntryModal}>
+    <Modal isOpen={isOpen} close={closeModal}>
       <p className="text-primaryDarkBlue font-bold text-4xl">Add Entry</p>
       <div style={{ width: 750, marginTop: 40 }}>
         <div className="flex">
@@ -153,7 +180,11 @@ export default function AddTimeEntryModal({
               <option disabled value="">
                 Select Date
               </option>
-              {getDateWorked()}
+              {getDateWorkedList(startDate, endDate).map((date) => (
+                <option key={date} value={date}>
+                  {date}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -170,7 +201,11 @@ export default function AddTimeEntryModal({
             <option disabled value="">
               Select Allowance Type
             </option>
-            {getAllowanceType()}
+            {fieldConfigurations?.map((d) => (
+              <option key={d.id} value={d.description2}>
+                {d.description}
+              </option>
+            ))}
           </select>
         </div>
         <div className="mt-6">
@@ -185,12 +220,21 @@ export default function AddTimeEntryModal({
             rows={5}
           />
         </div>
-        <button
-          className="btn btn-primary btn-full mt-4"
-          onClick={handleAddNewEntry}
-        >
-          Add New Entry
-        </button>
+        {selectedTableRow ? (
+          <button
+            className="btn btn-primary btn-full mt-4"
+            onClick={handleUpdateEntry}
+          >
+            Update Entry
+          </button>
+        ) : (
+          <button
+            className="btn btn-primary btn-full mt-4"
+            onClick={handleAddNewEntry}
+          >
+            Add New Entry
+          </button>
+        )}
       </div>
     </Modal>
   );

@@ -1,19 +1,32 @@
 import React from "react";
-import { Modal } from "../../components";
+import { Modal } from "..";
 import { useContextConsumer } from "../../AppContext";
 import useDeleteLine from "../../hooks/useDeleteLine";
 import { useMutation } from "react-query";
 
-export default function DeleteTimeEntryModal({ isOpen, close, patchHeaders }) {
+export default function DeleteTimeEntryModal({
+  isOpen,
+  close,
+  id,
+  refetchLines,
+}) {
   const { setIsAppLoading } = useContextConsumer();
+
+  const { mutate: mutateDeleteLine } = useMutation(useDeleteLine, {
+    onSuccess: () => {
+      setIsAppLoading(false);
+      refetchLines();
+    },
+    onError: () => {
+      setIsAppLoading(false);
+      alert("Sorry, Something went wrong.");
+    },
+  });
 
   const handleDelete = () => {
     setIsAppLoading(true);
     close();
-    patchHeaders({
-      status: "Released",
-      remarks: "",
-    });
+    mutateDeleteLine(id);
   };
 
   return (
