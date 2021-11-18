@@ -11,6 +11,7 @@ import {
   getDateWorkedList,
 } from "./TableCommon";
 import usePatchLines from "../../hooks/usePatchLines";
+import useToasts from "../../hooks/useToasts";
 
 export default function AddEditTimeEntryModal({
   isOpen,
@@ -19,6 +20,7 @@ export default function AddEditTimeEntryModal({
   selectedTableRow,
 }) {
   const { setIsAppLoading } = useContextConsumer();
+  const { successToast, errorToast } = useToasts();
 
   const {
     state: {
@@ -28,27 +30,31 @@ export default function AddEditTimeEntryModal({
 
   const { data: fieldConfigurations } = useFieldConfigurations();
 
+  const handleSuccess = () => {
+    setIsAppLoading(false);
+    resetState();
+    refetchLines();
+  };
+
   const { mutate: mutatePostLines } = useMutation(usePostLines, {
     onSuccess: () => {
-      setIsAppLoading(false);
-      resetState();
-      refetchLines();
+      handleSuccess();
+      successToast("Added Successfully");
     },
     onError: () => {
       setIsAppLoading(false);
-      alert("Something went wrong.");
+      errorToast("Sorry, Something went wrong.");
     },
   });
 
   const { mutate: mutatePatchLines } = useMutation(usePatchLines, {
     onSuccess: () => {
-      setIsAppLoading(false);
-      resetState();
-      refetchLines();
+      handleSuccess();
+      successToast("Updated Successfully");
     },
     onError: () => {
       setIsAppLoading(false);
-      alert("Something went wrong.");
+      errorToast("Sorry, Something went wrong.");
     },
   });
 

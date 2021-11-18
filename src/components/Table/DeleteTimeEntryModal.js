@@ -3,6 +3,7 @@ import { Modal } from "..";
 import { useContextConsumer } from "../../AppContext";
 import useDeleteLine from "../../hooks/useDeleteLine";
 import { useMutation } from "react-query";
+import useToasts from "../../hooks/useToasts";
 
 export default function DeleteTimeEntryModal({
   isOpen,
@@ -11,15 +12,17 @@ export default function DeleteTimeEntryModal({
   refetchLines,
 }) {
   const { setIsAppLoading } = useContextConsumer();
+  const { successToast, errorToast } = useToasts();
 
   const { mutate: mutateDeleteLine } = useMutation(useDeleteLine, {
     onSuccess: () => {
       setIsAppLoading(false);
       refetchLines();
+      successToast("Deleted Successfully");
     },
     onError: () => {
       setIsAppLoading(false);
-      alert("Sorry, Something went wrong.");
+      errorToast("Sorry, Something went wrong.");
     },
   });
 

@@ -4,7 +4,7 @@ import { AppContextProvider } from "./AppContext";
 import { CustomNavigationClient } from "./utils/CustomNavigationClient";
 import { MsalAuthenticationTemplate, MsalProvider } from "@azure/msal-react";
 import { QueryClient, QueryClientProvider } from "react-query";
-// import { ToastProvider } from "react-toast-notifications";
+import { ToastProvider } from "react-toast-notifications";
 
 // MSAL imports
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
@@ -79,21 +79,21 @@ export default function AppWrapper() {
   // );
   return (
     <BrowserRouter>
-      {/* <ToastProvider> */}
-      <QueryClientProvider client={queryClient}>
-        <MsalProvider instance={msalInstance}>
-          <MsalAuthenticationTemplate
-            interactionType="redirect"
-            loadingComponent={InProgressComponent}
-            errorComponent={ErrorComponent}
-          >
-            <AppContextProvider>
-              <App />
-            </AppContextProvider>
-          </MsalAuthenticationTemplate>
-        </MsalProvider>
-      </QueryClientProvider>
-      {/* </ToastProvider> */}
+      <ToastProvider autoDismiss autoDismissTimeout={3000}>
+        <QueryClientProvider client={queryClient}>
+          <MsalProvider instance={msalInstance}>
+            <MsalAuthenticationTemplate
+              interactionType="redirect"
+              loadingComponent={InProgressComponent}
+              errorComponent={ErrorComponent}
+            >
+              <AppContextProvider>
+                <App />
+              </AppContextProvider>
+            </MsalAuthenticationTemplate>
+          </MsalProvider>
+        </QueryClientProvider>
+      </ToastProvider>
     </BrowserRouter>
   );
 }

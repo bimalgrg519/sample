@@ -6,6 +6,7 @@ import { useMutation } from "react-query";
 import { useHistory } from "react-router-dom";
 import RejectModal from "./RejectModal";
 import ApproveModal from "./ApproveModal";
+import useToasts from "../../hooks/useToasts";
 
 export default function ButtonGroup({ status, remarks, id }) {
   const { isManager, setIsAppLoading } = useContextConsumer();
@@ -13,15 +14,26 @@ export default function ButtonGroup({ status, remarks, id }) {
   const history = useHistory();
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const { successToast, errorToast } = useToasts();
+
+  const [selectedButton, setSelectedButton] = useState(null);
 
   const { mutate: mutatePatchHeaders } = useMutation(usePatchHeaders, {
     onSuccess: () => {
       setIsAppLoading(false);
       history.goBack();
+
+      if (selectedButton === "Submit") {
+        successToast("Submitted Successfully");
+      } else if (selectedButton === "Reject") {
+        successToast("Rejected Successfully");
+      } else if (selectedButton === "Approve") {
+        successToast("Approved Successfully");
+      }
     },
     onError: () => {
       setIsAppLoading(false);
-      alert("Something went wrong.");
+      errorToast("Sorry, Something went wrong.");
     },
   });
 
@@ -43,7 +55,10 @@ export default function ButtonGroup({ status, remarks, id }) {
         />
         <button
           className="btn btn-primary"
-          onClick={() => setIsSubmitModalOpen(true)}
+          onClick={() => {
+            setIsSubmitModalOpen(true);
+            setSelectedButton("Submit");
+          }}
         >
           Submit
         </button>
@@ -68,14 +83,20 @@ export default function ButtonGroup({ status, remarks, id }) {
         {!remarks && (
           <button
             className="btn btn-outline"
-            onClick={() => setIsRejectModalOpen(true)}
+            onClick={() => {
+              setIsRejectModalOpen(true);
+              setSelectedButton("Reject");
+            }}
           >
             Reject
           </button>
         )}
         <button
           className="btn btn-primary"
-          onClick={() => setIsApproveModalOpen(true)}
+          onClick={() => {
+            setIsApproveModalOpen(true);
+            setSelectedButton("Approve");
+          }}
         >
           Approve
         </button>
