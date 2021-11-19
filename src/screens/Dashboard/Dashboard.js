@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useContextConsumer } from "../../AppContext";
 import useHeaders from "../../hooks/useHeaders";
-import { Loader, HeadersTable } from "../../components";
+import { HeadersTable } from "../../components";
 import Title from "./Title";
 import Tabs from "./Tabs";
 import SearchBar from "./SearchBar";
@@ -26,7 +26,7 @@ export default function Dashboard() {
 
   const { data: payPeriodsData } = usePayPeriods();
 
-  const { isLoading: isLoadingHeaders, data: headersData } = useHeaders(
+  const { data: headersData, isSuccess } = useHeaders(
     `?$filter=${
       isManager ? "managerCode" : "employeeCode"
     } eq '${userCode}' and startDate ge ${
@@ -74,14 +74,10 @@ export default function Dashboard() {
     }
   }, [payPeriodsData]);
 
-  if (isLoadingHeaders || !initialHeaderList) {
-    return <Loader />;
-  }
-
   return (
     <div>
       <Title />
-      <div className="mt-6">
+      <div className="mt-6 px-1">
         <PayPeriodsDropdownList
           data={payPeriodsData}
           selectedPayPeriod={selectedPayPeriod}
@@ -95,7 +91,7 @@ export default function Dashboard() {
           />
         </div>
       </div>
-      <HeadersTable data={headerList} />
+      <HeadersTable data={headerList} isSuccess={isSuccess} />
     </div>
   );
 }

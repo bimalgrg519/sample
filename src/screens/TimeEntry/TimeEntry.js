@@ -1,5 +1,5 @@
 import React from "react";
-import { Loader, LinesTable } from "../../components";
+import { LinesTable } from "../../components";
 import useLines from "../../hooks/useLines";
 import { useLocation } from "react-router-dom";
 import { useContextConsumer } from "../../AppContext";
@@ -29,18 +29,14 @@ export default function TimeEntry() {
   const employeeFilterUrl = `employeeCode eq '${userCode}'`;
 
   const {
-    isLoading: isLoadingLines,
     data: linesData,
     refetch: refetchLines,
+    isLoading,
   } = useLines(
     `?$filter=${
       isManager ? managerFilterUrl : employeeFilterUrl
     } and startDate ge ${startDate} and endDate le ${endDate}`
   );
-
-  if (isLoadingLines) {
-    return <Loader />;
-  }
 
   return (
     <div>
@@ -62,6 +58,7 @@ export default function TimeEntry() {
         linesData={linesData}
         refetchLines={refetchLines}
         status={status}
+        isLoading={isLoading}
       />
       <AddTimeEntryButton status={status} refetchLines={refetchLines} />
     </div>
