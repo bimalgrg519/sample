@@ -33,9 +33,9 @@ const InProgressComponent = ({ inProgress }) => {
   return (
     <div>
       <StaticHeader />
-      <div className="flex justify-center items-center w-container mx-auto mt-8">
+      <div className="flex flex-col justify-center items-center w-container mx-auto mt-8">
         <Loader />
-        <p className="ml-4 font-semibold">{inProgress} In Progress</p>
+        <p className="mt-2 font-semibold">Loading...</p>
       </div>
     </div>
   );

@@ -20,8 +20,8 @@ export default function Routes() {
   const [initialLoading, setInitialLoading] = useState(true);
 
   const { data: employees } = useEmployees(
-    // "?$filter=companyEmail eq 'nabin.neupane@dogmagroup.co.uk'"
-    "?$filter=companyEmail eq 'bimal.gurung@dogmagroup.co.uk'"
+    "?$filter=companyEmail eq 'nabin.neupane@dogmagroup.co.uk'"
+    // "?$filter=companyEmail eq 'bimal.gurung@dogmagroup.co.uk'"
   );
 
   const { data: workSites } = useWorkSites(
