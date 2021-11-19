@@ -1,11 +1,12 @@
 import axios from "axios";
 
 const bcToken = () =>
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Imwzc1EtNTBjQ0g0eEJWWkxIVEd3blNSNzY4MCIsImtpZCI6Imwzc1EtNTBjQ0g0eEJWWkxIVEd3blNSNzY4MCJ9.eyJhdWQiOiJodHRwczovL2FwaS5idXNpbmVzc2NlbnRyYWwuZHluYW1pY3MuY29tIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvODQ3MmU1ZmUtMzIxMS00MDI5LTljYmItYmJjOGFiMWRiZTcyLyIsImlhdCI6MTYzNzMxMDA4MSwibmJmIjoxNjM3MzEwMDgxLCJleHAiOjE2MzczMTM5ODEsImFpbyI6IkUyWmdZQ2haOC9QUmMvZUo1c1lmdWxmVlhXVXJCUUE9IiwiYXBwaWQiOiJjZTQ0MjY3YS0zNjg2LTQ3MzAtODUyNi01MzJiZmVkYzdkZDkiLCJhcHBpZGFjciI6IjEiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC84NDcyZTVmZS0zMjExLTQwMjktOWNiYi1iYmM4YWIxZGJlNzIvIiwiaWR0eXAiOiJhcHAiLCJvaWQiOiI3MDAwZWY3Ny04NDFiLTQ1ZGYtOTE2My0xZWJlZWJjN2QwYmIiLCJyaCI6IjAuQVhRQV91VnloQkV5S1VDY3U3dklxeDItY25vbVJNNkdOakJIaFNaVEtfN2NmZGwwQUFBLiIsInJvbGVzIjpbIkF1dG9tYXRpb24uUmVhZFdyaXRlLkFsbCIsImFwcF9hY2Nlc3MiLCJBUEkuUmVhZFdyaXRlLkFsbCJdLCJzdWIiOiI3MDAwZWY3Ny04NDFiLTQ1ZGYtOTE2My0xZWJlZWJjN2QwYmIiLCJ0aWQiOiI4NDcyZTVmZS0zMjExLTQwMjktOWNiYi1iYmM4YWIxZGJlNzIiLCJ1dGkiOiJDRVhIaDR4RUZVMkNtMXUxSkJJckFBIiwidmVyIjoiMS4wIn0.noAxU287oArhO27YobNntl3U3OIqfXZsoiKATqK35fEfzOYR-ikabbIw8stABWQxb2fIVosy2LiioqEnXB4O1qiP2pGP35emMyYWUzSDAnPiH8r3WwPZU7gI0n2dRpEB5caqaazIs4NMm04uG0r6Kv6oIIqp6Jfw9CapdgwjnlJ4oGQBx9oj61YBo093fnV6c6cAC_GERkIi6W4VP0FrSbPe0ALqfYeqONBJvO76_ilg7lu9E7ZEM1trBcV5zN38e50v8GgXZMM8yzzVsYa4YGGYg5Wnjuy-HaY0Df4e-r-kXZrY7cuco2UlBFUddXWoQ9LHJ56o_9fuyDkZIGMU8Q";
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Imwzc1EtNTBjQ0g0eEJWWkxIVEd3blNSNzY4MCIsImtpZCI6Imwzc1EtNTBjQ0g0eEJWWkxIVEd3blNSNzY4MCJ9.eyJhdWQiOiJodHRwczovL2FwaS5idXNpbmVzc2NlbnRyYWwuZHluYW1pY3MuY29tIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvODQ3MmU1ZmUtMzIxMS00MDI5LTljYmItYmJjOGFiMWRiZTcyLyIsImlhdCI6MTYzNzMxODc3NCwibmJmIjoxNjM3MzE4Nzc0LCJleHAiOjE2MzczMjI2NzQsImFpbyI6IkUyWmdZTWg0c3JyNWlkQ1VwZnN6MWFZVk1uODdCZ0E9IiwiYXBwaWQiOiJjZTQ0MjY3YS0zNjg2LTQ3MzAtODUyNi01MzJiZmVkYzdkZDkiLCJhcHBpZGFjciI6IjEiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC84NDcyZTVmZS0zMjExLTQwMjktOWNiYi1iYmM4YWIxZGJlNzIvIiwiaWR0eXAiOiJhcHAiLCJvaWQiOiI3MDAwZWY3Ny04NDFiLTQ1ZGYtOTE2My0xZWJlZWJjN2QwYmIiLCJyaCI6IjAuQVhRQV91VnloQkV5S1VDY3U3dklxeDItY25vbVJNNkdOakJIaFNaVEtfN2NmZGwwQUFBLiIsInJvbGVzIjpbIkF1dG9tYXRpb24uUmVhZFdyaXRlLkFsbCIsImFwcF9hY2Nlc3MiLCJBUEkuUmVhZFdyaXRlLkFsbCJdLCJzdWIiOiI3MDAwZWY3Ny04NDFiLTQ1ZGYtOTE2My0xZWJlZWJjN2QwYmIiLCJ0aWQiOiI4NDcyZTVmZS0zMjExLTQwMjktOWNiYi1iYmM4YWIxZGJlNzIiLCJ1dGkiOiJEdUVTVjk0YzJVQ2E4R3NnZjJJQ0FBIiwidmVyIjoiMS4wIn0.WSqcGmmZ30a42IGiJzKRVb8bVqaG7rGiLn-wi4kjFw9h-5DrsmOVa_PuJ1f4lTRLEkC0UPlX7mso6ztwUDinkZFsUlwaCm8cWJSGTuK8WDUkRhIvpQmlKH2iqRgaEWzm1GMDn-Bzq9qdUMSICTm6-xJKaBZ3mWvHJLy8B9F9edvohhYMvlz3UFP1urkM-0CAq2ahRtd7TUyZ-2AmMOuEnNZOq8LQf3ERZ_Dy9ikJ7aRINocrLLkeXoQTb4SmHaTRQlPnwf5cOquNrZo_OCIDEjCqUpovW0QbqDtYvDUlFczsCvgmvrg3ta8onDAFhjq5znkkFiIso_dqk0m4F5i3yw";
 // const bcToken = () => sessionStorage.getItem("bcToken");
 
 const crmToken = () => sessionStorage.getItem("crmToken");
 const apiUrl = () => sessionStorage.getItem("apiUrl");
+const batchApiUrl = () => sessionStorage.getItem("batchApiUrl");
 
 const crmApiUrl = "https://orgcdc5d2c5.api.crm11.dynamics.com/api/data/v9.2";
 
@@ -57,6 +58,13 @@ const api = {
   },
   delete: (resource) => {
     return axios.delete(apiUrl() + resource, {
+      headers: {
+        Authorization: `Bearer ${bcToken()}`,
+      },
+    });
+  },
+  batch: (data) => {
+    return axios.post(`${batchApiUrl()}/$batch`, data, {
       headers: {
         Authorization: `Bearer ${bcToken()}`,
       },

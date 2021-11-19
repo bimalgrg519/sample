@@ -6,7 +6,7 @@ import AddEditTimeEntryModal from "./AddEditTimeEntryModal";
 import useFieldConfigurations from "../../hooks/useFieldConfigurations";
 import { useContextConsumer } from "../../AppContext";
 
-export default function LinesTable({ data, refetchLines, status }) {
+export default function LinesTable({ linesData, refetchLines, status }) {
   const { isManager } = useContextConsumer();
 
   const [isDeleteTimeEntryOpen, setIsDeleteTimeEntryOpen] = useState(false);
@@ -21,7 +21,7 @@ export default function LinesTable({ data, refetchLines, status }) {
   };
 
   // dont show zero hours worked
-  const filteredData = data.filter((d) => getHours(d) > 0);
+  const filteredLinesData = linesData?.filter((d) => getHours(d) > 0);
 
   return (
     <div className="px-1 overflow-x-auto">
@@ -37,7 +37,6 @@ export default function LinesTable({ data, refetchLines, status }) {
         selectedTableRow={selectedTableRow}
         refetchLines={refetchLines}
       />
-
       <table className="w-full mt-5 table-auto md:table-fixed whitespace-nowrap text-center shadow">
         <thead>
           <tr className=" bg-primaryDarkBlue text-white uppercase">
@@ -52,7 +51,7 @@ export default function LinesTable({ data, refetchLines, status }) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((d) => (
+          {filteredLinesData.map((d) => (
             <tr key={d.id} className="even:bg-lightGreen font-helvetica">
               <td className="py-2 md:py-3 px-3 md:px-0">{d.startDate}</td>
               <td className="py-2 px-3">{getHours(d)}</td>

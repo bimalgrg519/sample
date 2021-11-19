@@ -2,16 +2,13 @@ import React from "react";
 import { Modal } from "../../components";
 import { useContextConsumer } from "../../AppContext";
 
-export default function SubmitModal({ isOpen, close, id, patchHeaders }) {
+export default function SubmitModal({ isOpen, close, onSubmit }) {
   const { setIsAppLoading } = useContextConsumer();
 
   const handleSubmit = () => {
     setIsAppLoading(true);
     close();
-    patchHeaders({
-      status: "Pending Approval",
-      remarks: "",
-    });
+    onSubmit({ status: "Pending Approval", remarks: "" });
   };
 
   return (

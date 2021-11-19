@@ -44,6 +44,10 @@ export const AppContextProvider = ({ children }) => {
         "apiUrl",
         `https://api.businesscentral.dynamics.com/v2.0/8472e5fe-3211-4029-9cbb-bbc8ab1dbe72/TTTEnergySB/api/dogma/payroll/v1.0/companies(${COMPANY_ID})`
       );
+      sessionStorage.setItem(
+        "batchApiUrl",
+        `https://api.businesscentral.dynamics.com/v2.0/8472e5fe-3211-4029-9cbb-bbc8ab1dbe72/TTTEnergySB/api/dogma/payroll/v1.0`
+      );
 
       setInitialLoading(false);
     }

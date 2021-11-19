@@ -2,16 +2,13 @@ import React from "react";
 import { Modal } from "../../components";
 import { useContextConsumer } from "../../AppContext";
 
-export default function ApproveModal({ isOpen, close, patchHeaders }) {
+export default function ApproveModal({ isOpen, close, onSubmit }) {
   const { setIsAppLoading } = useContextConsumer();
 
   const handleApprove = () => {
     setIsAppLoading(true);
     close();
-    patchHeaders({
-      status: "Released",
-      remarks: "",
-    });
+    onSubmit({ status: "Released", remarks: "" });
   };
 
   return (

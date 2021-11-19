@@ -49,12 +49,17 @@ export default function TimeEntry() {
           Weekly Time Entries
         </span>
         <div className="text-center">
-          <ButtonGroup status={status} remarks={remarks} id={id} />
+          <ButtonGroup
+            status={status}
+            remarks={remarks}
+            id={id}
+            linesData={linesData}
+          />
         </div>
       </div>
       <RemarksMessage remarks={remarks} />
       <LinesTable
-        data={linesData}
+        linesData={linesData}
         refetchLines={refetchLines}
         status={status}
       />

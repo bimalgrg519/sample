@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useContextConsumer } from "../../AppContext";
 import SubmitModal from "./SubmitModal";
-import usePatchHeaders from "../../hooks/usePatchHeaders";
 import { useMutation } from "react-query";
 import { useHistory } from "react-router-dom";
 import RejectModal from "./RejectModal";
 import ApproveModal from "./ApproveModal";
 import useToasts from "../../hooks/useToasts";
+import useBatchHeadersAndLines from "../../hooks/useBatchHeadersAndLines";
+import { getBatchBody } from "../../utils/getBatchBody";
 
-export default function ButtonGroup({ status, remarks, id }) {
+export default function ButtonGroup({ status, remarks, id, linesData }) {
   const { isManager, setIsAppLoading } = useContextConsumer();
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const history = useHistory();
@@ -18,29 +19,31 @@ export default function ButtonGroup({ status, remarks, id }) {
 
   const [selectedButton, setSelectedButton] = useState(null);
 
-  const { mutate: mutatePatchHeaders } = useMutation(usePatchHeaders, {
-    onSuccess: () => {
-      setIsAppLoading(false);
-      history.goBack();
+  const { mutate: mutateBatchHeadersAndLines } = useMutation(
+    useBatchHeadersAndLines,
+    {
+      onSuccess: () => {
+        setIsAppLoading(false);
+        history.goBack();
 
-      if (selectedButton === "Submit") {
-        successToast("Submitted Successfully");
-      } else if (selectedButton === "Reject") {
-        successToast("Rejected Successfully");
-      } else if (selectedButton === "Approve") {
-        successToast("Approved Successfully");
-      }
-    },
-    onError: () => {
-      setIsAppLoading(false);
-      errorToast("Sorry, Something went wrong.");
-    },
-  });
+        if (selectedButton === "Submit") {
+          successToast("Submitted Successfully");
+        } else if (selectedButton === "Reject") {
+          successToast("Rejected Successfully");
+        } else if (selectedButton === "Approve") {
+          successToast("Approved Successfully");
+        }
+      },
+      onError: () => {
+        setIsAppLoading(false);
+        errorToast("Sorry, Something went wrong.");
+      },
+    }
+  );
 
-  const handlePatchHeaders = (body) => {
-    mutatePatchHeaders({
-      id,
-      body,
+  const handleSubmit = ({ status, remarks }) => {
+    mutateBatchHeadersAndLines({
+      requests: getBatchBody({ id, linesData, status, remarks }),
     });
   };
 
@@ -51,7 +54,7 @@ export default function ButtonGroup({ status, remarks, id }) {
           id={id}
           isOpen={isSubmitModalOpen}
           close={() => setIsSubmitModalOpen(false)}
-          patchHeaders={handlePatchHeaders}
+          onSubmit={handleSubmit}
         />
         <button
           className="btn btn-primary"
@@ -70,15 +73,14 @@ export default function ButtonGroup({ status, remarks, id }) {
     return (
       <div className="flex items-center space-x-2">
         <RejectModal
-          id={id}
           isOpen={isRejectModalOpen}
           close={() => setIsRejectModalOpen(false)}
-          patchHeaders={handlePatchHeaders}
+          onSubmit={handleSubmit}
         />
         <ApproveModal
           isOpen={isApproveModalOpen}
           close={() => setIsApproveModalOpen(false)}
-          patchHeaders={handlePatchHeaders}
+          onSubmit={handleSubmit}
         />
         {!remarks && (
           <button

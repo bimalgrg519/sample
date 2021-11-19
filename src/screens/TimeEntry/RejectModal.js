@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "../../components";
 import { useContextConsumer } from "../../AppContext";
 
-export default function RejectModal({ id, isOpen, close, patchHeaders }) {
+export default function RejectModal({ isOpen, close, onSubmit }) {
   const { setIsAppLoading } = useContextConsumer();
   const [rejectReason, setRejectReason] = useState("");
 
@@ -10,10 +10,7 @@ export default function RejectModal({ id, isOpen, close, patchHeaders }) {
     if (rejectReason) {
       close();
       setIsAppLoading(true);
-      patchHeaders({
-        status: "Open",
-        remarks: rejectReason,
-      });
+      onSubmit({ status: "Open", remarks: rejectReason });
     }
   };
 
