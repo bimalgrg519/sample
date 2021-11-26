@@ -6,6 +6,7 @@ import useEmployees from "./hooks/useEmployees";
 import { useContextConsumer } from "./AppContext";
 import { Loader } from "./components";
 import useWorkSites from "./hooks/useWorkSites";
+import { useAccount, useMsal } from "@azure/msal-react";
 
 const NotFound = () => {
   return (
@@ -19,9 +20,13 @@ export default function Routes() {
   const { setUserCode, setIsManager } = useContextConsumer();
   const [initialLoading, setInitialLoading] = useState(true);
 
+  const { accounts } = useMsal();
+  const account = useAccount(accounts[0] || {});
+
   const { data: employees } = useEmployees(
     // "?$filter=companyEmail eq 'nabin.neupane@dogmagroup.co.uk'"
-    "?$filter=companyEmail eq 'bimal.gurung@dogmagroup.co.uk'"
+    // "?$filter=companyEmail eq 'bimal.gurung@dogmagroup.co.uk'"
+    `?$filter=companyEmail eq '${account?.username}'`
   );
 
   const { data: workSites } = useWorkSites(

@@ -19,8 +19,8 @@ const AzureActiveDirectoryAppClientId = "0335b3bf-a2f1-4310-91bf-0758fcfea8d0";
 export const msalConfig = {
   auth: {
     clientId: AzureActiveDirectoryAppClientId,
-    authority: `https://login.microsoftonline.com/8472e5fe-3211-4029-9cbb-bbc8ab1dbe72`,
-    // authority: 'https://login.windows-ppe.net/common',
+    // authority: `https://login.microsoftonline.com/8472e5fe-3211-4029-9cbb-bbc8ab1dbe72`,
+    authority: "https://login.microsoftonline.com/common",
     redirectUri: window.location.origin,
     postLogoutRedirectUri: "/",
   },
