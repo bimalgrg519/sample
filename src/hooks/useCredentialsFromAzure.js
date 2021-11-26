@@ -1,8 +1,7 @@
 import { useQuery } from "react-query";
 import axios from "axios";
 
-const AZURE_URL =
-  "https://connecttokenmanagement.azurewebsites.net/api/GetTSConfig";
+const AZURE_URL = "https://3ttoken.azurewebsites.net/api/GetTSConfig";
 
 const getCredentialsFromAzure = async (token) => {
   const payloadData = JSON.stringify({
