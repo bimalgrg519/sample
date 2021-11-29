@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ReactComponent as LogoSvg } from "../../assets/logo.svg";
 import { IoArrowBack } from "react-icons/io5";
 import { useHistory, useLocation } from "react-router-dom";
-import { useMsal } from "@azure/msal-react";
+import { useMsal, useAccount } from "@azure/msal-react";
 
 // StaticHeader is used in initial loading state of app
 export const StaticHeader = ({ leftComponent, rightComponent }) => {
@@ -20,7 +20,8 @@ export const StaticHeader = ({ leftComponent, rightComponent }) => {
 export default function Header() {
   const history = useHistory();
   const { pathname } = useLocation();
-  const { instance } = useMsal();
+  const { instance, accounts } = useMsal();
+  const account = useAccount(accounts[0] || {});
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -45,6 +46,12 @@ export default function Header() {
           </div>
         )
       }
+      // rightComponent={
+      //   <div className="flex flex-col items-end text-primaryDarkBlue">
+      //     {account?.username}
+      //     <p className="font-medium hover:font-bold cursor-pointer">Logout</p>
+      //   </div>
+      // }
       rightComponent={
         <div
           className="w-8 h-8 cursor-pointer relative"

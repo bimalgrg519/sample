@@ -25,7 +25,7 @@
   "scripts": {
     "eject": "react-scripts eject",
     "start": "craco start",
-    "build": "craco build",
+    "build": "craco build GENERATE_SOURCEMAP=FALSE",
     "test": "craco test"
   },
   "eslintConfig": {
