@@ -9,7 +9,13 @@ import useToasts from "../../hooks/useToasts";
 import useBatchHeadersAndLines from "../../hooks/useBatchHeadersAndLines";
 import { getBatchBody } from "../../utils/getBatchBody";
 
-export default function ButtonGroup({ status, remarks, id, linesData }) {
+export default function ButtonGroup({
+  status,
+  remarks,
+  id,
+  linesData,
+  isMyTimeEntriesSelected,
+}) {
   const { isManager, setIsAppLoading } = useContextConsumer();
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const history = useHistory();
@@ -63,13 +69,40 @@ export default function ButtonGroup({ status, remarks, id, linesData }) {
             setSelectedButton("Submit");
           }}
         >
+          Submit for a week
+        </button>
+      </div>
+    );
+  }
+
+  if (status === "Open" && isMyTimeEntriesSelected) {
+    return (
+      <div className="self-end">
+        <SubmitModal
+          id={id}
+          isOpen={isSubmitModalOpen}
+          close={() => setIsSubmitModalOpen(false)}
+          onSubmit={handleSubmit}
+        />
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            setIsSubmitModalOpen(true);
+            setSelectedButton("Submit");
+          }}
+        >
           Submit
         </button>
       </div>
     );
   }
 
-  if (isManager && status !== "Released") {
+  if (
+    isManager &&
+    status !== "Released" &&
+    isMyTimeEntriesSelected === false &&
+    !remarks
+  ) {
     return (
       <div className="flex items-center space-x-2 self-end">
         <RejectModal
@@ -82,17 +115,15 @@ export default function ButtonGroup({ status, remarks, id, linesData }) {
           close={() => setIsApproveModalOpen(false)}
           onSubmit={handleSubmit}
         />
-        {!remarks && (
-          <button
-            className="btn btn-outline"
-            onClick={() => {
-              setIsRejectModalOpen(true);
-              setSelectedButton("Reject");
-            }}
-          >
-            Reject
-          </button>
-        )}
+        <button
+          className="btn btn-outline"
+          onClick={() => {
+            setIsRejectModalOpen(true);
+            setSelectedButton("Reject");
+          }}
+        >
+          Reject
+        </button>
         <button
           className="btn btn-primary"
           onClick={() => {

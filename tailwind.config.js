@@ -28,6 +28,7 @@ module.exports = {
         container: 1280,
       },
       fontFamily: {
+        // sans: ['"Quicksand"'], // default font
         sans: ['"FoundryGridnik"'], // default font
         helvetica: "Helvetica",
       },

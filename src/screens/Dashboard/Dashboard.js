@@ -22,20 +22,38 @@ export default function Dashboard() {
   const [initialHeaderList, setInitialHeaderList] = useState(null);
   const [headerList, setHeaderList] = useState([]);
 
+  const [isMyTimeEntriesSelected, setIsMyTimeEntriesSelected] = useState(false);
+
   const { isManager, userCode, setIsAppLoading } = useContextConsumer();
 
   const { data: payPeriodsData } = usePayPeriods();
 
-  const { data: headersData, isSuccess } = useHeaders(
-    `?$filter=${
-      isManager ? "managerCode" : "employeeCode"
-    } eq '${userCode}' and startDate ge ${
-      selectedPayPeriod.startDate
-    } and endDate le ${selectedPayPeriod.endDate}`,
-    {
-      enabled: !!Object.keys(selectedPayPeriod).length,
-    }
-  );
+  // const { data: headersData, isSuccess } = useHeaders(
+  //   `?$filter=${
+  //     isManager ? "managerCode" : "employeeCode"
+  //   } eq '${userCode}' and startDate ge ${
+  //     selectedPayPeriod.startDate
+  //   } and endDate le ${selectedPayPeriod.endDate}`,
+  //   {
+  //     enabled: !!Object.keys(selectedPayPeriod).length,
+  //   }
+  // );
+
+  const { data: employeeHeadersData, isSuccess: isSuccessEmployeeHeaders } =
+    useHeaders(
+      `?$filter=employeeCode eq '${userCode}' and startDate ge ${selectedPayPeriod.startDate} and endDate le ${selectedPayPeriod.endDate}`,
+      {
+        enabled: !!Object.keys(selectedPayPeriod).length,
+      }
+    );
+
+  const { data: managerHeadersData, isSuccess: isSuccessManagerHeaders } =
+    useHeaders(
+      `?$filter=managerCode eq '${userCode}' and startDate ge ${selectedPayPeriod.startDate} and endDate le ${selectedPayPeriod.endDate}`,
+      {
+        enabled: !!Object.keys(selectedPayPeriod).length,
+      }
+    );
 
   const setData = React.useCallback(
     (data) => {
@@ -47,22 +65,40 @@ export default function Dashboard() {
   );
 
   useEffect(() => {
-    if (headersData) {
-      if (isManager) {
-        if (selectedTab === "Pending") {
-          setData(headersData.filter((d) => d.status === "Pending Approval"));
-        } else if (selectedTab === "Approved") {
-          setData(headersData.filter((d) => d.status === "Released"));
-        } else if (selectedTab === "Rejected") {
-          setData(headersData.filter((d) => d.remarks));
-        } else {
-          setData(headersData);
-        }
+    if (isManager && managerHeadersData && !isMyTimeEntriesSelected) {
+      if (selectedTab === "Pending") {
+        setData(
+          managerHeadersData.filter((d) => d.status === "Pending Approval")
+        );
+      } else if (selectedTab === "Approved") {
+        setData(managerHeadersData.filter((d) => d.status === "Released"));
+      } else if (selectedTab === "Rejected") {
+        setData(managerHeadersData.filter((d) => d.remarks));
       } else {
-        setData(headersData);
+        setData(
+          managerHeadersData.filter((d) => d.status !== "Open" && !d.remarks)
+        );
       }
     }
-  }, [headersData, isManager, selectedTab, setData]);
+  }, [
+    isManager,
+    isMyTimeEntriesSelected,
+    managerHeadersData,
+    selectedTab,
+    setData,
+  ]);
+
+  useEffect(() => {
+    if (isMyTimeEntriesSelected && employeeHeadersData) {
+      setData(employeeHeadersData);
+    }
+  }, [employeeHeadersData, isMyTimeEntriesSelected, setData]);
+
+  useEffect(() => {
+    if (!isManager && employeeHeadersData) {
+      setData(employeeHeadersData);
+    }
+  }, [employeeHeadersData, isManager, setData]);
 
   useEffect(() => {
     if (payPeriodsData) {
@@ -76,7 +112,10 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Title />
+      <Title
+        isMyTimeEntriesSelected={isMyTimeEntriesSelected}
+        setIsMyTimeEntriesSelected={setIsMyTimeEntriesSelected}
+      />
       <div className="mt-6 px-1">
         <PayPeriodsDropdownList
           data={payPeriodsData}
@@ -84,14 +123,22 @@ export default function Dashboard() {
           setSelectedPayPeriod={setSelectedPayPeriod}
         />
         <div className="flex flex-col-reverse md:flex-row justify-between">
-          <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+          {isManager && !isMyTimeEntriesSelected ? (
+            <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+          ) : (
+            <div />
+          )}
           <SearchBar
             initialHeaderList={initialHeaderList}
             setHeaderList={setHeaderList}
           />
         </div>
       </div>
-      <HeadersTable data={headerList} isSuccess={isSuccess} />
+      <HeadersTable
+        data={headerList}
+        isSuccess={isSuccessManagerHeaders && isSuccessEmployeeHeaders}
+        isMyTimeEntriesSelected={isMyTimeEntriesSelected}
+      />
     </div>
   );
 }

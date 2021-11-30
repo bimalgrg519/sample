@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useContextConsumer } from "../../AppContext";
 import AddEditTimeEntryModal from "../../components/Table/AddEditTimeEntryModal";
 
-export default function AddTimeEntryButton({ status, refetchLines }) {
+export default function AddTimeEntryButton({
+  status,
+  refetchLines,
+  isMyTimeEntriesSelected,
+}) {
   const { isManager } = useContextConsumer();
 
   const [isAddTimeEntryModalOpen, setIsTimeEntryModalOpen] = useState(false);
 
-  if (!isManager && status === "Open")
+  const _render = () => {
     return (
       <>
         <AddEditTimeEntryModal
@@ -26,5 +30,14 @@ export default function AddTimeEntryButton({ status, refetchLines }) {
         </div>
       </>
     );
+  };
+
+  if (!isManager && status === "Open") {
+    return _render();
+  }
+
+  if (isMyTimeEntriesSelected && status === "Open") {
+    return _render();
+  }
   return null;
 }

@@ -6,14 +6,18 @@ import { useContextConsumer } from "../../AppContext";
 import ButtonGroup from "./ButtonGroup";
 import AddTimeEntryButton from "./AddTimeEntryButton";
 
-const RemarksMessage = ({ remarks }) =>
+const RemarksMessage = ({ remarks, isManager }) =>
   remarks && (
     <div className="mt-4">
       <p className="text-red-900 font-medium">Reason of rejection</p>
       <div className="bg-red-100 px-4 py-2 rounded text-red-900 text-lg mb-2">
         {remarks}
       </div>
-      <p className="text-sm">* Please correct your time entry and resubmit.</p>
+      {!isManager && (
+        <p className="text-sm">
+          * Please correct your time entry and resubmit.
+        </p>
+      )}
     </div>
   );
 
@@ -21,6 +25,7 @@ export default function TimeEntry() {
   const {
     state: {
       data: { id, startDate, endDate, employeeCode, status, remarks },
+      isMyTimeEntriesSelected,
     },
   } = useLocation();
   const { isManager, userCode } = useContextConsumer();
@@ -34,7 +39,9 @@ export default function TimeEntry() {
     isLoading,
   } = useLines(
     `?$filter=${
-      isManager ? managerFilterUrl : employeeFilterUrl
+      isManager && isMyTimeEntriesSelected === false
+        ? managerFilterUrl
+        : employeeFilterUrl
     } and startDate ge ${startDate} and endDate le ${endDate}`
   );
 
@@ -49,16 +56,21 @@ export default function TimeEntry() {
           remarks={remarks}
           id={id}
           linesData={linesData}
+          isMyTimeEntriesSelected={isMyTimeEntriesSelected}
         />
       </div>
-      <RemarksMessage remarks={remarks} />
+      <RemarksMessage remarks={remarks} isManager={isManager} />
       <LinesTable
         linesData={linesData}
         refetchLines={refetchLines}
         status={status}
         isLoading={isLoading}
       />
-      <AddTimeEntryButton status={status} refetchLines={refetchLines} />
+      <AddTimeEntryButton
+        status={status}
+        refetchLines={refetchLines}
+        isMyTimeEntriesSelected={isMyTimeEntriesSelected}
+      />
     </div>
   );
 }

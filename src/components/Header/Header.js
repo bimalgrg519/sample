@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ReactComponent as LogoSvg } from "../../assets/logo.svg";
 import { IoArrowBack } from "react-icons/io5";
 import { useHistory, useLocation } from "react-router-dom";
@@ -10,7 +10,9 @@ export const StaticHeader = ({ leftComponent, rightComponent }) => {
     <div className="bg-white border-b border-primaryBlue">
       <div className="max-w-container mx-auto flex justify-between items-center py-3 relative">
         <div className="w-10 h-10 -my-4 flex items-center">{leftComponent}</div>
-        <LogoSvg />
+        <div className="text-xs">
+          <LogoSvg />
+        </div>
         {rightComponent}
       </div>
     </div>
@@ -23,7 +25,7 @@ export default function Header() {
   const { instance, accounts } = useMsal();
   const account = useAccount(accounts[0] || {});
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleLogout = (logoutType) => {
     // eslint-disable-next-line no-restricted-globals
@@ -46,31 +48,36 @@ export default function Header() {
           </div>
         )
       }
-      // rightComponent={
-      //   <div className="flex flex-col items-end text-primaryDarkBlue">
-      //     {account?.username}
-      //     <p className="font-medium hover:font-bold cursor-pointer">Logout</p>
-      //   </div>
-      // }
       rightComponent={
-        <div
-          className="w-8 h-8 cursor-pointer relative"
-          onMouseEnter={() => setIsDropdownOpen(true)}
-          onMouseLeave={() => setIsDropdownOpen(false)}
-        >
-          <div className="w-full h-full rounded-full bg-primaryBlue" />
-          {isDropdownOpen && (
-            <div className="absolute bg-white text-black right-0 w-60 px-5 py-2 shadow">
-              <button
-                onClick={() => handleLogout("redirect")}
-                className="px-2 font-semibold w-full py-4 hover:bg-gray-100"
-              >
-                Logout
-              </button>
-            </div>
-          )}
+        <div className="flex flex-col items-end text-primaryDarkBlue text-xs sm:text-base">
+          {account?.username}
+          <p
+            className="font-medium hover:font-bold cursor-pointer"
+            onClick={() => handleLogout("redirect")}
+          >
+            Logout
+          </p>
         </div>
       }
+      // rightComponent={
+      //   <div
+      //     className="w-8 h-8 cursor-pointer relative"
+      //     onMouseEnter={() => setIsDropdownOpen(true)}
+      //     onMouseLeave={() => setIsDropdownOpen(false)}
+      //   >
+      //     <div className="w-full h-full rounded-full bg-primaryBlue" />
+      //     {isDropdownOpen && (
+      //       <div className="absolute bg-white text-black right-0 w-60 px-5 py-2 shadow">
+      //         <button
+      //           onClick={() => handleLogout("redirect")}
+      //           className="px-2 font-semibold w-full py-4 hover:bg-gray-100"
+      //         >
+      //           Logout
+      //         </button>
+      //       </div>
+      //     )}
+      //   </div>
+      // }
     />
   );
   // return (

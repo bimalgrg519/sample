@@ -29,6 +29,7 @@ export default function AddEditTimeEntryModal({
     formState: { errors },
     clearErrors,
     setValue,
+    getValues,
   } = useForm();
 
   const {
@@ -149,6 +150,11 @@ export default function AddEditTimeEntryModal({
           {errors.hoursWorked && (
             <span className="text-red-700 font-medium mt-4">
               {errors.hoursWorked.message}
+            </span>
+          )}
+          {getValues("hoursWorked") === "0" && (
+            <span className="text-red-700 font-medium mt-4">
+              This is required
             </span>
           )}
         </div>
