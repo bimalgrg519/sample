@@ -1,4 +1,3 @@
 {
-    "appService.defaultWebAppToDeploy": "/subscriptions/5522501b-6be8-4a7f-9ce8-b431929a31bd/resourceGroups/DefaultResourceGroup-WUK/providers/Microsoft.Web/sites/3tenergy",
-    "appService.deploySubpath": "build"
+  "appService.deploySubpath": "build"
 }
