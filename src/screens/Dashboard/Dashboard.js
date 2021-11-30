@@ -76,7 +76,12 @@ export default function Dashboard() {
         setData(managerHeadersData.filter((d) => d.remarks));
       } else {
         setData(
-          managerHeadersData.filter((d) => d.status !== "Open" && !d.remarks)
+          managerHeadersData.filter((d) => {
+            if (d.status === "Open" && !d.remarks) {
+              return false;
+            }
+            return true;
+          })
         );
       }
     }
