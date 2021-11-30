@@ -1,5 +1,6 @@
 import React from "react";
 import { useContextConsumer } from "../../AppContext";
+import { changeDateToUkFormat } from "../../utils/changeDateToUkFormat";
 
 export default function PayPeriodsDropdownList({
   data,
@@ -23,7 +24,7 @@ export default function PayPeriodsDropdownList({
         </option>
         {data?.map(({ id, startDate, endDate }) => (
           <option key={id} value={id}>
-            {startDate} - {endDate}
+            {changeDateToUkFormat(startDate)} - {changeDateToUkFormat(endDate)}
           </option>
         ))}
       </select>

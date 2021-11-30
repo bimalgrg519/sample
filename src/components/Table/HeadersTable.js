@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Loader } from "..";
 import { useContextConsumer } from "../../AppContext";
+import { changeDateToUkFormat } from "../../utils/changeDateToUkFormat";
 import { getHours } from "./TableCommon";
 
 export default function HeadersTable({
@@ -46,32 +47,38 @@ export default function HeadersTable({
               </td>
             </tr>
           ) : (
-            data?.map((d) => (
-              <tr
-                key={d.id}
-                className="even:bg-lightGreen font-helvetica cursor-pointer text-center whitespace-nowrap"
-                onClick={() =>
-                  history.push("timeEntry", {
-                    data: d,
-                    isMyTimeEntriesSelected,
-                  })
-                }
-              >
-                <td className="sm:py-2 py-3 px-2 md:px-0">{d.startDate}</td>
-                <td className="px-2 md:px-0">{d.endDate}</td>
-                <td className="px-2 md:px-0 py-2 md:py-3">{getHours(d)}</td>
-                <td className="px-2 md:px-0">
-                  {isManager ? d.employeeName : d.managerCode}
-                </td>
-                <td className="px-2 md:px-0">
-                  {d.remarks ? (
-                    <span className="text-red-600">(Rejected)</span>
-                  ) : (
-                    d.status
-                  )}
-                </td>
-              </tr>
-            ))
+            data?.map((d) => {
+              return (
+                <tr
+                  key={d.id}
+                  className="even:bg-lightGreen font-helvetica cursor-pointer text-center whitespace-nowrap"
+                  onClick={() =>
+                    history.push("timeEntry", {
+                      data: d,
+                      isMyTimeEntriesSelected,
+                    })
+                  }
+                >
+                  <td className="sm:py-2 py-3 px-2 md:px-0">
+                    {changeDateToUkFormat(d.startDate)}
+                  </td>
+                  <td className="px-2 md:px-0">
+                    {changeDateToUkFormat(d.endDate)}
+                  </td>
+                  <td className="px-2 md:px-0 py-2 md:py-3">{getHours(d)}</td>
+                  <td className="px-2 md:px-0">
+                    {isManager ? d.employeeName : d.managerCode}
+                  </td>
+                  <td className="px-2 md:px-0">
+                    {d.remarks ? (
+                      <span className="text-red-600">(Rejected)</span>
+                    ) : (
+                      d.status
+                    )}
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>

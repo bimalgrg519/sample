@@ -10,10 +10,8 @@ export const StaticHeader = ({ leftComponent, rightComponent }) => {
     <div className="bg-white border-b border-primaryBlue">
       <div className="max-w-container mx-auto flex justify-between items-center py-3 relative">
         <div className="w-10 h-10 -my-4 flex items-center">{leftComponent}</div>
-        <div className="text-xs">
-          <LogoSvg />
-        </div>
-        {rightComponent}
+        <LogoSvg />
+        <div className="w-8 h-8 hidden md:block"></div>
       </div>
     </div>
   );

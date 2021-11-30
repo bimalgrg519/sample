@@ -145,7 +145,15 @@ export default function AddEditTimeEntryModal({
             id="hoursWorked"
             className="appearance-none border border-blue-200 py-2 px-4 rounded-sm w-full"
             type="number"
-            {...register("hoursWorked", { required: "This is required" })}
+            step="0.5"
+            min="0"
+            {...register("hoursWorked", {
+              required: { value: true, message: "This is required" },
+              pattern: {
+                value: /^(\d|1\d|2[0-4])(\.\d{1,2})?$/,
+                message: "Invalid time format.(0-24)",
+              },
+            })}
           />
           {errors.hoursWorked && (
             <span className="text-red-700 font-medium mt-4">
