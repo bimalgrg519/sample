@@ -8,6 +8,7 @@ import SearchBar from "./SearchBar";
 import usePayPeriods from "../../hooks/usePayPeriods";
 import PayPeriodsDropdownList from "./PayPeriodsDropdownList";
 import moment from "moment";
+import Pagination from "../../components/Table/Pagination";
 
 const isBetween = (startDate, endDate) => {
   return (
@@ -21,6 +22,7 @@ export default function Dashboard() {
   const [selectedPayPeriod, setSelectedPayPeriod] = useState({});
   const [initialHeaderList, setInitialHeaderList] = useState(null);
   const [headerList, setHeaderList] = useState([]);
+  const [paginatedList, setPaginatedList] = useState([]);
 
   const [isMyTimeEntriesSelected, setIsMyTimeEntriesSelected] = useState(false);
 
@@ -144,6 +146,12 @@ export default function Dashboard() {
         isSuccess={isSuccessManagerHeaders && isSuccessEmployeeHeaders}
         isMyTimeEntriesSelected={isMyTimeEntriesSelected}
       />
+      {isManager && (
+        <Pagination
+          rawList={headerList}
+          fetchPaginatedList={setPaginatedList}
+        />
+      )}
     </div>
   );
 }
