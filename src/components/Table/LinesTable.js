@@ -30,6 +30,8 @@ export default function LinesTable({
   // dont show zero hours worked
   const filteredLinesData = linesData?.filter((d) => getHours(d) > 0);
 
+  let totalHours = filteredLinesData?.reduce((a, b) => a + getHours(b), 0);
+
   return (
     <div className="p-1 overflow-x-auto">
       <DeleteTimeEntryModal
@@ -105,6 +107,14 @@ export default function LinesTable({
               </td>
             </tr>
           ))}
+          {totalHours ? (
+            <tr className="hover:shadow-none text-lg font-semibold bg-gray-100">
+              <td className="py-2 sm:py-3 px-4">Total</td>
+              <td className="py-2 sm:py-3 px-4" colSpan={3}>
+                {totalHours} hrs
+              </td>
+            </tr>
+          ) : null}
         </tbody>
       </table>
     </div>

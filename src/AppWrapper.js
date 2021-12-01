@@ -66,17 +66,6 @@ export default function AppWrapper() {
   const navigationClient = new CustomNavigationClient(history);
   msalInstance.setNavigationClient(navigationClient);
 
-  // return (
-  //   <BrowserRouter>
-  //     {/* <ToastProvider> */}
-  //     <QueryClientProvider client={queryClient}>
-  //       <AppProvider>
-  //         <App />
-  //       </AppProvider>
-  //     </QueryClientProvider>
-  //     {/* </ToastProvider> */}
-  //   </BrowserRouter>
-  // );
   return (
     <BrowserRouter>
       <ToastProvider autoDismiss autoDismissTimeout={3000}>
