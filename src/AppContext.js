@@ -14,6 +14,7 @@ export const AppContextProvider = ({ children }) => {
   const { instance } = useMsal();
 
   const [userCode, setUserCode] = useState(null);
+  const [isMyTimeEntriesSelected, setIsMyTimeEntriesSelected] = useState(false);
 
   const token = useAuthentication();
   const { data: credentialsFromAzureData, error } =
@@ -69,6 +70,8 @@ export const AppContextProvider = ({ children }) => {
         setIsAppLoading,
         isManager,
         setIsManager,
+        isMyTimeEntriesSelected,
+        setIsMyTimeEntriesSelected,
       }}
     >
       {children}

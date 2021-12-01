@@ -5,13 +5,9 @@ import { Loader } from "..";
 import { useContextConsumer } from "../../AppContext";
 import { getHours } from "./TableCommon";
 
-export default function HeadersTable({
-  data,
-  isSuccess,
-  isMyTimeEntriesSelected,
-}) {
+export default function HeadersTable({ data, isSuccess }) {
   const history = useHistory();
-  const { isManager } = useContextConsumer();
+  const { isManager, isMyTimeEntriesSelected } = useContextConsumer();
 
   return (
     <div className="px-1 pb-1 overflow-x-auto">

@@ -26,9 +26,8 @@ export default function Dashboard() {
   const [headerList, setHeaderList] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  const [isMyTimeEntriesSelected, setIsMyTimeEntriesSelected] = useState(false);
-
-  const { isManager, userCode, setIsAppLoading } = useContextConsumer();
+  const { isManager, userCode, setIsAppLoading, isMyTimeEntriesSelected } =
+    useContextConsumer();
 
   const { data: payPeriodsData } = usePayPeriods();
 
@@ -121,10 +120,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Title
-        isMyTimeEntriesSelected={isMyTimeEntriesSelected}
-        setIsMyTimeEntriesSelected={setIsMyTimeEntriesSelected}
-      />
+      <Title />
       <div className="mt-6 px-1">
         <PayPeriodsDropdownList
           data={payPeriodsData}
@@ -148,7 +144,6 @@ export default function Dashboard() {
       <HeadersTable
         data={headerList}
         isSuccess={isSuccessManagerHeaders && isSuccessEmployeeHeaders}
-        isMyTimeEntriesSelected={isMyTimeEntriesSelected}
       />
       {isManager &&
         initialHeaderList.length > NUMBER_OF_ITEMS_PER_PAGE &&

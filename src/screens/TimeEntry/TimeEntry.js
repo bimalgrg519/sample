@@ -26,14 +26,13 @@ export default function TimeEntry() {
 
   const {
     data: { id, startDate, endDate, employeeCode, status, remarks },
-    isMyTimeEntriesSelected,
   } = state || {
     data: {},
   };
 
   const history = useHistory();
 
-  const { isManager, userCode } = useContextConsumer();
+  const { isManager, userCode, isMyTimeEntriesSelected } = useContextConsumer();
 
   const managerFilterUrl = `managerCode eq '${userCode}' and employeeCode eq '${employeeCode}'`;
   const employeeFilterUrl = `employeeCode eq '${userCode}'`;
@@ -67,7 +66,6 @@ export default function TimeEntry() {
           remarks={remarks}
           id={id}
           linesData={linesData}
-          isMyTimeEntriesSelected={isMyTimeEntriesSelected}
         />
       </div>
       <RemarksMessage remarks={remarks} isManager={isManager} />
@@ -77,11 +75,7 @@ export default function TimeEntry() {
         status={status}
         isLoading={isLoading}
       />
-      <AddTimeEntryButton
-        status={status}
-        refetchLines={refetchLines}
-        isMyTimeEntriesSelected={isMyTimeEntriesSelected}
-      />
+      <AddTimeEntryButton status={status} refetchLines={refetchLines} />
     </div>
   );
 }

@@ -1,11 +1,9 @@
 import React from "react";
 import { useContextConsumer } from "../../AppContext";
 
-export default function Title({
-  isMyTimeEntriesSelected,
-  setIsMyTimeEntriesSelected,
-}) {
-  const { isManager } = useContextConsumer();
+export default function Title() {
+  const { isManager, isMyTimeEntriesSelected, setIsMyTimeEntriesSelected } =
+    useContextConsumer();
 
   return (
     <div className="flex">

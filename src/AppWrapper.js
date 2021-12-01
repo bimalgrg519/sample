@@ -9,7 +9,7 @@ import { ToastProvider } from "react-toast-notifications";
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { msalConfig } from "./azure/authConfig";
 import App from "./App";
-import { StaticHeader, Loader, InitialLoader } from "./components";
+import { InitialLoader } from "./components";
 
 const queryClient = new QueryClient();
 
@@ -52,11 +52,6 @@ const ErrorComponent = ({ error }) => {
 };
 
 export default function AppWrapper() {
-  // const history = useHistory();
-
-  // const navigationClient = new CustomNavigationClient(history);
-  // msalInstance.setNavigationClient(navigationClient);
-
   return (
     <BrowserRouter>
       <ToastProvider autoDismiss autoDismissTimeout={3000}>

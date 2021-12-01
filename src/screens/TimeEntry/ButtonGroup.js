@@ -9,14 +9,9 @@ import useToasts from "../../hooks/useToasts";
 import useBatchHeadersAndLines from "../../hooks/useBatchHeadersAndLines";
 import { getBatchBody } from "../../utils/getBatchBody";
 
-export default function ButtonGroup({
-  status,
-  remarks,
-  id,
-  linesData,
-  isMyTimeEntriesSelected,
-}) {
-  const { isManager, setIsAppLoading } = useContextConsumer();
+export default function ButtonGroup({ status, remarks, id, linesData }) {
+  const { isManager, setIsAppLoading, isMyTimeEntriesSelected } =
+    useContextConsumer();
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const history = useHistory();
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);

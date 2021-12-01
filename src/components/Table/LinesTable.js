@@ -14,7 +14,7 @@ export default function LinesTable({
   status,
   isLoading,
 }) {
-  const { isManager } = useContextConsumer();
+  const { isManager, isMyTimeEntriesSelected } = useContextConsumer();
 
   const [isDeleteTimeEntryOpen, setIsDeleteTimeEntryOpen] = useState(false);
   const [isAddEditTimeEntryOpen, setIsAddEditTimeEntryOpen] = useState(false);
@@ -82,7 +82,8 @@ export default function LinesTable({
               <td className="py-2 sm:py-3 px-4 relative min-w-xs">
                 {d.remarks}
                 {(!isManager && status === "Open") ||
-                (isManager && status === "Pending Approval") ? (
+                (isManager && status === "Pending Approval") ||
+                (isMyTimeEntriesSelected && status === "Open") ? (
                   <div className="invisible absolute h-full top-0 right-0 bg-white group-hover:visible flex items-center text-2xl px-2">
                     <div
                       className="px-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 py-2 rounded-full cursor-pointer"

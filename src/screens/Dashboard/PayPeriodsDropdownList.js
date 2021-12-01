@@ -1,7 +1,6 @@
 import moment from "moment";
 import React from "react";
 import { useContextConsumer } from "../../AppContext";
-import { changeDateToUkFormat } from "../../utils/changeDateToUkFormat";
 
 export default function PayPeriodsDropdownList({
   data,

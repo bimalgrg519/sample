@@ -2,12 +2,8 @@ import React, { useState } from "react";
 import { useContextConsumer } from "../../AppContext";
 import AddEditTimeEntryModal from "../../components/Table/AddEditTimeEntryModal";
 
-export default function AddTimeEntryButton({
-  status,
-  refetchLines,
-  isMyTimeEntriesSelected,
-}) {
-  const { isManager } = useContextConsumer();
+export default function AddTimeEntryButton({ status, refetchLines }) {
+  const { isManager, isMyTimeEntriesSelected } = useContextConsumer();
 
   const [isAddTimeEntryModalOpen, setIsTimeEntryModalOpen] = useState(false);
 
