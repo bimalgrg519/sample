@@ -25,9 +25,9 @@ function Pagination({
               <span
                 className={`${
                   currentPage === index + 1
-                    ? "bg-blue-400 text-white"
-                    : "bg-white text-gray-500"
-                } border border-gray-300 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                    ? "bg-primaryDarkBlue text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-700"
+                } border border-gray-300 py-2 px-4 font-semibold`}
                 role="button"
                 onClick={() => {
                   setCurrentPage(index + 1);

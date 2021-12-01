@@ -53,48 +53,32 @@ export default function ButtonGroup({
     });
   };
 
+  const _renderSubmit = () => (
+    <div className="self-end">
+      <SubmitModal
+        id={id}
+        isOpen={isSubmitModalOpen}
+        close={() => setIsSubmitModalOpen(false)}
+        onSubmit={handleSubmit}
+      />
+      <button
+        className="btn btn-primary"
+        onClick={() => {
+          setIsSubmitModalOpen(true);
+          setSelectedButton("Submit");
+        }}
+      >
+        {remarks ? "Resubmit" : "Submit"} for a week
+      </button>
+    </div>
+  );
+
   if (status === "Open" && !isManager) {
-    return (
-      <div className="self-end">
-        <SubmitModal
-          id={id}
-          isOpen={isSubmitModalOpen}
-          close={() => setIsSubmitModalOpen(false)}
-          onSubmit={handleSubmit}
-        />
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            setIsSubmitModalOpen(true);
-            setSelectedButton("Submit");
-          }}
-        >
-          {remarks ? "Resubmit" : "Submit"} for a week
-        </button>
-      </div>
-    );
+    return _renderSubmit();
   }
 
   if (status === "Open" && isMyTimeEntriesSelected) {
-    return (
-      <div className="self-end">
-        <SubmitModal
-          id={id}
-          isOpen={isSubmitModalOpen}
-          close={() => setIsSubmitModalOpen(false)}
-          onSubmit={handleSubmit}
-        />
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            setIsSubmitModalOpen(true);
-            setSelectedButton("Submit");
-          }}
-        >
-          Submit
-        </button>
-      </div>
-    );
+    return _renderSubmit();
   }
 
   if (

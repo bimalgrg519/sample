@@ -32,11 +32,13 @@ export default function AddEditTimeEntryModal({
     getValues,
   } = useForm();
 
+  const { state } = useLocation();
+
   const {
-    state: {
-      data: { startDate, endDate, employeeCode, documentNo, site },
-    },
-  } = useLocation();
+    data: { startDate, endDate, employeeCode, documentNo, site },
+  } = state || {
+    data: {},
+  };
 
   const { data: fieldConfigurations } = useFieldConfigurations();
 

@@ -61,10 +61,10 @@ const ErrorComponent = ({ error }) => {
 };
 
 export default function AppWrapper() {
-  const history = useHistory();
+  // const history = useHistory();
 
-  const navigationClient = new CustomNavigationClient(history);
-  msalInstance.setNavigationClient(navigationClient);
+  // const navigationClient = new CustomNavigationClient(history);
+  // msalInstance.setNavigationClient(navigationClient);
 
   return (
     <BrowserRouter>

@@ -1,4 +1,4 @@
-import { NavigationClient } from '@azure/msal-browser';
+import { NavigationClient } from "@azure/msal-browser";
 
 /**
  * This is an example for overriding the default function MSAL uses to navigate to other urls in your webpage
@@ -16,12 +16,13 @@ export class CustomNavigationClient extends NavigationClient {
    * @param options
    */
   async navigateInternal(url, options) {
-    const relativePath = url.replace(window.location.origin, '');
-    if (options.noHistory) {
-      this.history.replace(relativePath);
-    } else {
-      this.history.push(relativePath);
-    }
+    // const relativePath = url.replace(window.location.origin, "");
+
+    // if (options.noHistory) {
+    //   this.history.replace(relativePath);
+    // } else {
+    //   this.history.push(relativePath);
+    // }
 
     return false;
   }

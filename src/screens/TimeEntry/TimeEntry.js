@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LinesTable } from "../../components";
 import useLines from "../../hooks/useLines";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useContextConsumer } from "../../AppContext";
 import ButtonGroup from "./ButtonGroup";
 import AddTimeEntryButton from "./AddTimeEntryButton";
 
 const RemarksMessage = ({ remarks, isManager }) =>
-  remarks && (
+  remarks ? (
     <div className="mt-4">
       <p className="text-red-900 font-medium">Reason of rejection</p>
       <div className="bg-red-100 px-4 py-2 rounded text-red-900 text-lg mb-2">
@@ -19,15 +19,20 @@ const RemarksMessage = ({ remarks, isManager }) =>
         </p>
       )}
     </div>
-  );
+  ) : null;
 
 export default function TimeEntry() {
+  const { state } = useLocation();
+
   const {
-    state: {
-      data: { id, startDate, endDate, employeeCode, status, remarks },
-      isMyTimeEntriesSelected,
-    },
-  } = useLocation();
+    data: { id, startDate, endDate, employeeCode, status, remarks },
+    isMyTimeEntriesSelected,
+  } = state || {
+    data: {},
+  };
+
+  const history = useHistory();
+
   const { isManager, userCode } = useContextConsumer();
 
   const managerFilterUrl = `managerCode eq '${userCode}' and employeeCode eq '${employeeCode}'`;
@@ -44,6 +49,12 @@ export default function TimeEntry() {
         : employeeFilterUrl
     } and startDate ge ${startDate} and endDate le ${endDate}`
   );
+
+  useEffect(() => {
+    if (!id) {
+      history.push("/");
+    }
+  }, [history, id]);
 
   return (
     <div>

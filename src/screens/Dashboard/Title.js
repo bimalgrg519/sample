@@ -10,7 +10,7 @@ export default function Title({
   return (
     <div className="flex">
       {isManager ? (
-        <div className="flex bg-gray-200 rounded p-1 cursor-pointer text-xl">
+        <div className="flex bg-gray-200 rounded p-1 cursor-pointer text-lg">
           <div
             className={`px-4 py-1 rounded ${
               !isMyTimeEntriesSelected

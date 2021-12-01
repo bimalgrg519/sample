@@ -22,7 +22,9 @@ export default function HeadersTable({
             <th className="py-2 sm:py-3 px-4">End Date</th>
             <th className="py-2 sm:py-3 px-4">Hours Worked</th>
             <th className="py-2 sm:py-3 px-4">
-              {isManager ? "Employee" : "Manager Code"}
+              {isManager && !isMyTimeEntriesSelected
+                ? "Employee"
+                : "Manager Code"}
             </th>
             <th className="py-2 sm:py-3 px-4">Status</th>
           </tr>
@@ -64,7 +66,9 @@ export default function HeadersTable({
                   </td>
                   <td className="py-2 sm:py-3 px-4">{getHours(d)}</td>
                   <td className="py-2 sm:py-3 px-4">
-                    {isManager ? d.employeeName : d.managerCode}
+                    {isManager && !isMyTimeEntriesSelected
+                      ? d.employeeName
+                      : d.managerCode}
                   </td>
                   <td className="py-2 sm:py-3 px-4">
                     {d.remarks ? (
