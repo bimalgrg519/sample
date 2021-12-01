@@ -17,12 +17,14 @@ const isBetween = (startDate, endDate) => {
   );
 };
 
+const NUMBER_OF_ITEMS_PER_PAGE = 10;
+
 export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("All Entries");
   const [selectedPayPeriod, setSelectedPayPeriod] = useState({});
-  const [initialHeaderList, setInitialHeaderList] = useState(null);
+  const [initialHeaderList, setInitialHeaderList] = useState([]);
   const [headerList, setHeaderList] = useState([]);
-  const [paginatedList, setPaginatedList] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const [isMyTimeEntriesSelected, setIsMyTimeEntriesSelected] = useState(false);
 
@@ -136,6 +138,8 @@ export default function Dashboard() {
             <div />
           )}
           <SearchBar
+            searchText={searchText}
+            setSearchText={setSearchText}
             initialHeaderList={initialHeaderList}
             setHeaderList={setHeaderList}
           />
@@ -146,12 +150,15 @@ export default function Dashboard() {
         isSuccess={isSuccessManagerHeaders && isSuccessEmployeeHeaders}
         isMyTimeEntriesSelected={isMyTimeEntriesSelected}
       />
-      {isManager && (
-        <Pagination
-          rawList={headerList}
-          fetchPaginatedList={setPaginatedList}
-        />
-      )}
+      {isManager &&
+        initialHeaderList.length > NUMBER_OF_ITEMS_PER_PAGE &&
+        !searchText && (
+          <Pagination
+            initialHeaderList={initialHeaderList}
+            setHeaderList={setHeaderList}
+            numberOfItemsPerPage={NUMBER_OF_ITEMS_PER_PAGE}
+          />
+        )}
     </div>
   );
 }

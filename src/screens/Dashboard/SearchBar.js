@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useContextConsumer } from "../../AppContext";
 import { IoSearchOutline } from "react-icons/io5";
 
-export default function SearchBar({ setHeaderList, initialHeaderList }) {
+export default function SearchBar({
+  setHeaderList,
+  initialHeaderList,
+  searchText,
+  setSearchText,
+}) {
   const { isManager } = useContextConsumer();
-  const [searchText, setSearchText] = useState("");
 
   const handleSearch = (e) => {
     const text = e.target.value;
