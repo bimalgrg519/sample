@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import useAuthentication from "./hooks/useAuthentication";
 import useCredentialsFromAzure from "./hooks/useCredentialsFromAzure";
-import { Loader } from "./components";
+import { InitialLoader, Loader } from "./components";
 import { COMPANY_ID } from "./constants/constants";
 import { useMsal } from "@azure/msal-react";
 
@@ -9,7 +9,7 @@ export const Context = React.createContext();
 
 export const AppContextProvider = ({ children }) => {
   const [isAppLoading, setIsAppLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [isManager, setIsManager] = useState(false);
   const { instance } = useMsal();
 
@@ -58,12 +58,7 @@ export const AppContextProvider = ({ children }) => {
   }
 
   if (initialLoading) {
-    return (
-      <div className="w-screen h-screen flex flex-col items-center justify-center">
-        <Loader />
-        <p className="mt-2 font-semibold">Loading...</p>
-      </div>
-    );
+    return <InitialLoader />;
   }
 
   return (

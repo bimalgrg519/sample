@@ -1,7 +1,6 @@
 import React from "react";
-import { BrowserRouter, useHistory } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { AppContextProvider } from "./AppContext";
-import { CustomNavigationClient } from "./utils/CustomNavigationClient";
 import { MsalAuthenticationTemplate, MsalProvider } from "@azure/msal-react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastProvider } from "react-toast-notifications";
@@ -10,7 +9,7 @@ import { ToastProvider } from "react-toast-notifications";
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { msalConfig } from "./azure/authConfig";
 import App from "./App";
-import { StaticHeader, Loader } from "./components";
+import { StaticHeader, Loader, InitialLoader } from "./components";
 
 const queryClient = new QueryClient();
 
@@ -29,16 +28,8 @@ msalInstance.addEventCallback((event) => {
   }
 });
 
-const InProgressComponent = ({ inProgress }) => {
-  return (
-    <div>
-      <StaticHeader />
-      <div className="flex flex-col justify-center items-center w-container mx-auto mt-8">
-        <Loader />
-        <p className="mt-2 font-semibold">Loading...</p>
-      </div>
-    </div>
-  );
+const InProgressComponent = () => {
+  return <InitialLoader />;
 };
 
 const ErrorComponent = ({ error }) => {
