@@ -157,6 +157,7 @@ export default function AddEditTimeEntryModal({
                 value: /^(\d|1\d|2[0-4])(\.\d{1,2})?$/,
                 message: "Invalid time format.(0-24)",
               },
+              max: { value: 24, message: "Value must not exceed 24" },
             })}
           />
           {errors.hoursWorked && (

@@ -1,8 +1,8 @@
+import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Loader } from "..";
 import { useContextConsumer } from "../../AppContext";
-import { changeDateToUkFormat } from "../../utils/changeDateToUkFormat";
 import { getHours } from "./TableCommon";
 
 export default function HeadersTable({
@@ -59,10 +59,10 @@ export default function HeadersTable({
                   }
                 >
                   <td className="py-2 sm:py-3 px-4">
-                    {changeDateToUkFormat(d.startDate)}
+                    {d.startDate && moment(d.startDate).format("DD-MM-YYYY")}
                   </td>
                   <td className="py-2 sm:py-3 px-4">
-                    {changeDateToUkFormat(d.endDate)}
+                    {d.endDate && moment(d.endDate).format("DD-MM-YYYY")}
                   </td>
                   <td className="py-2 sm:py-3 px-4">{getHours(d)}</td>
                   <td className="py-2 sm:py-3 px-4">

@@ -6,7 +6,7 @@ import AddEditTimeEntryModal from "./AddEditTimeEntryModal";
 import useFieldConfigurations from "../../hooks/useFieldConfigurations";
 import { useContextConsumer } from "../../AppContext";
 import { Loader } from "..";
-import { changeDateToUkFormat } from "../../utils/changeDateToUkFormat";
+import moment from "moment";
 
 export default function LinesTable({
   linesData,
@@ -75,7 +75,7 @@ export default function LinesTable({
           {filteredLinesData?.map((d) => (
             <tr key={d.id} className="even:bg-lightGreen font-helvetica group">
               <td className="py-2 sm:py-3 px-4 whitespace-nowrap">
-                {changeDateToUkFormat(d.startDate)}
+                {moment(d.startDate).format("DD-MM-YYYY")}
               </td>
               <td className="py-2 sm:py-3 px-4">{getHours(d)}</td>
               <td className="py-2 sm:py-3 px-4">{getAllowanceTypeTitle(d)}</td>
