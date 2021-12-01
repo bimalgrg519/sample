@@ -132,9 +132,11 @@ export default function AddEditTimeEntryModal({
 
   return (
     <Modal isOpen={isOpen} close={closeModal}>
-      <p className="text-primaryDarkBlue font-bold text-4xl">Add Entry</p>
+      <p className="text-primaryDarkBlue font-bold text-4xl">
+        {selectedTableRow ? "Update" : "Add"} Entry
+      </p>
       <form
-        className="mt-4 grid grid-cols-2 gap-4 min-w-xs sm:min-w-xl md:min-w-2xl"
+        className="mt-6 grid grid-cols-2 gap-4 min-w-xs sm:min-w-xl md:min-w-2xl"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="col-span-2 md:col-span-1">
@@ -217,9 +219,16 @@ export default function AddEditTimeEntryModal({
           <textarea
             id="projectDescription"
             className="w-full border border-blue-200 p-2"
-            {...register("projectDescription")}
-            rows={5}
+            {...register("projectDescription", {
+              maxLength: 180,
+            })}
+            rows={3}
           />
+          {errors.projectDescription?.type === "maxLength" && (
+            <span className="text-red-700 font-medium mt-4">
+              Maximum 180 characters is reached.
+            </span>
+          )}
         </div>
         <div className="col-span-2">
           <button className="btn btn-primary btn-full mt-4" type="submit">

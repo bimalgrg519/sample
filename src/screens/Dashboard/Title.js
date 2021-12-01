@@ -33,7 +33,7 @@ export default function Title({
           </div>
         </div>
       ) : (
-        <div className="text-2xl font-bold text-primaryBlue">
+        <div className="text-xl sm:text-2xl text font-bold text-primaryBlue">
           My Time Entries
         </div>
       )}

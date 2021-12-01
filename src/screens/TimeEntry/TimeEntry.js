@@ -48,7 +48,7 @@ export default function TimeEntry() {
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-between space-y-3 sm:space-y-0">
-        <span className="text-3xl font-bold text-primaryBlue">
+        <span className="text-xl sm:text-3xl font-bold text-primaryBlue">
           Weekly Time Entries
         </span>
         <ButtonGroup

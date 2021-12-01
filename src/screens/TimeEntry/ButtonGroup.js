@@ -69,7 +69,7 @@ export default function ButtonGroup({
             setSelectedButton("Submit");
           }}
         >
-          Submit for a week
+          {remarks ? "Resubmit" : "Submit"} for a week
         </button>
       </div>
     );

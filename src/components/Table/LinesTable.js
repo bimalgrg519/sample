@@ -44,30 +44,26 @@ export default function LinesTable({
         selectedTableRow={selectedTableRow}
         refetchLines={refetchLines}
       />
-      <table className="w-full mt-5 table-auto md:table-fixed whitespace-nowrap text-center shadow">
+      <table className="w-full mt-5 table-auto shadow text-left text-sm sm:text-base">
         <thead>
-          <tr className=" bg-primaryDarkBlue text-white uppercase">
-            <th className=" py-2 md:py-3 px-3 md:px-0">Date</th>
-            <th className="hidden md:block py-3 px-0">No. of Hours Worked</th>
-            <th className="md:hidden block px-3 py-2">Hours Worked</th>
-            <th className="py-2 md:py-3 px-3 md:px-0">Allowance Type</th>
-            <th className="hidden md:block py-3 px-0">
-              Project Description of Work
-            </th>
-            <th className="block md:hidden py-2 px-3">Work Description</th>
+          <tr className="bg-primaryDarkBlue text-white uppercase whitespace-nowrap">
+            <th className="py-2 sm:py-3 px-4">Date</th>
+            <th className="py-2 sm:py-3 px-4">Hours Worked</th>
+            <th className="py-2 sm:py-3 px-4">Allowance Type</th>
+            <th className="py-2 sm:py-3 px-4">Work Description</th>
           </tr>
         </thead>
         <tbody>
           {!isLoading && filteredLinesData?.length === 0 ? (
             <tr>
-              <td colSpan={4} className="py-3 text-center">
+              <td colSpan={4} className="py-2 sm:py-3 text-center">
                 Not Available
               </td>
             </tr>
           ) : null}
           {isLoading ? (
             <tr>
-              <td colSpan={4} className="py-3 text-center">
+              <td colSpan={4} className="py-2 sm:py-3 text-center">
                 <div className="inline-block">
                   <Loader />
                 </div>
@@ -76,14 +72,12 @@ export default function LinesTable({
           ) : null}
           {filteredLinesData?.map((d) => (
             <tr key={d.id} className="even:bg-lightGreen font-helvetica group">
-              <td className="py-2 md:py-3 px-3 md:px-0">
+              <td className="py-2 sm:py-3 px-4 whitespace-nowrap">
                 {changeDateToUkFormat(d.startDate)}
               </td>
-              <td className="py-2 px-3">{getHours(d)}</td>
-              <td className="py-2 md:py-3 px-3 md:px-0">
-                {getAllowanceTypeTitle(d)}
-              </td>
-              <td className="py-2 px-3 relative">
+              <td className="py-2 sm:py-3 px-4">{getHours(d)}</td>
+              <td className="py-2 sm:py-3 px-4">{getAllowanceTypeTitle(d)}</td>
+              <td className="py-2 sm:py-3 px-4 relative min-w-xs">
                 {d.remarks}
                 {(!isManager && status === "Open") ||
                 (isManager && status === "Pending Approval") ? (
