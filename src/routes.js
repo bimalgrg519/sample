@@ -24,8 +24,8 @@ export default function Routes() {
   const account = useAccount(accounts[0] || {});
 
   const { data: employees } = useEmployees(
-    // `?$filter=companyEmail eq '${account?.username}'`
-    `?$filter=companyEmail eq 'bimal.gurung@dogmagroup.co.uk'`
+    `?$filter=companyEmail eq '${account?.username}'`
+    // `?$filter=companyEmail eq 'bimal.gurung@dogmagroup.co.uk'`
   );
 
   const { data: workSites } = useWorkSites(
