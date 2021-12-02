@@ -13,6 +13,7 @@ import {
 import usePatchLines from "../../hooks/usePatchLines";
 import useToasts from "../../hooks/useToasts";
 import { useForm } from "react-hook-form";
+import moment from "moment";
 
 export default function AddEditTimeEntryModal({
   isOpen,
@@ -112,8 +113,8 @@ export default function AddEditTimeEntryModal({
 
     if (selectedTableRow) {
       const body = {
-        startDate: dateWorked,
-        endDate: dateWorked,
+        startDate: moment(dateWorked, "DD-MM-YYYY").format("YYYY-MM-DD"),
+        endDate: moment(dateWorked, "DD-MM-YYYY").format("YYYY-MM-DD"),
         remarks: projectDescription,
         ...workedhours,
       };
@@ -122,8 +123,8 @@ export default function AddEditTimeEntryModal({
       const body = {
         documentNo,
         employeeCode,
-        startDate: dateWorked,
-        endDate: dateWorked,
+        startDate: moment(dateWorked, "DD-MM-YYYY").format("YYYY-MM-DD"),
+        endDate: moment(dateWorked, "DD-MM-YYYY").format("YYYY-MM-DD"),
         site,
         remarks: projectDescription,
         ...workedhours,

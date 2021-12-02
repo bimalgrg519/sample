@@ -28,7 +28,12 @@ export default function LinesTable({
   };
 
   // dont show zero hours worked
-  const filteredLinesData = linesData?.filter((d) => getHours(d) > 0);
+  const filteredLinesData = linesData
+    ?.filter((d) => getHours(d) > 0)
+    .map((d) => ({
+      ...d,
+      startDate: moment(d.startDate).format("DD-MM-YYYY"),
+    }));
 
   let totalHours = filteredLinesData?.reduce((a, b) => a + getHours(b), 0);
 
@@ -75,7 +80,7 @@ export default function LinesTable({
           {filteredLinesData?.map((d) => (
             <tr key={d.id} className="even:bg-lightGreen font-helvetica group">
               <td className="py-2 sm:py-3 px-4 whitespace-nowrap">
-                {moment(d.startDate).format("DD-MM-YYYY")}
+                {d.startDate}
               </td>
               <td className="py-2 sm:py-3 px-4">{getHours(d)}</td>
               <td className="py-2 sm:py-3 px-4">{getAllowanceTypeTitle(d)}</td>

@@ -22,16 +22,13 @@ export const getAllowanceTypeByWorkedHours = (selectedTableRow) => {
 export const getDateWorkedList = (startDate, endDate) => {
   let dateWorked = [];
 
-  const start = moment(startDate, "YYYY-MM-DD");
-  const end = moment(endDate, "YYYY-MM-DD");
+  const start = moment(startDate);
+  const end = moment(endDate);
 
   const diff = end.diff(start, "days");
 
   for (let index = 0; index <= diff; index++) {
-    const formatedDay = moment(startDate, "YYYY-MM-DD")
-      .clone()
-      .add(index, "day")
-      .format("YYYY-MM-DD");
+    const formatedDay = start.clone().add(index, "day").format("DD-MM-YYYY");
 
     dateWorked.push(formatedDay);
   }
