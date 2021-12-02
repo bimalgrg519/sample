@@ -25,15 +25,19 @@ export default function Header() {
 
   // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleLogout = (logoutType) => {
+  const handleLogout = async (logoutType) => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm("Are you sure you want to logout?")) {
+      // localStorage.clear();
       if (logoutType === "popup") {
         instance.logoutPopup();
       } else if (logoutType === "redirect") {
         instance.logoutRedirect();
+
+        // handle multiple tab logged out
+        sessionStorage.setItem("loggedOut", true);
+        localStorage.setItem("loggedOut", true);
       }
-      sessionStorage.clear();
     }
   };
 

@@ -26,6 +26,7 @@ export const msalConfig = {
   },
   cache: {
     storeAuthStateInCookie: isIE || isEdge || isFirefox,
+    cacheLocation: "localStorage",
   },
   system: {
     loggerOptions: {

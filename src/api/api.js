@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const bcToken = () => sessionStorage.getItem("bcToken");
+const bcToken = () => localStorage.getItem("bcToken");
 
-const apiUrl = () => sessionStorage.getItem("apiUrl");
-const batchApiUrl = () => sessionStorage.getItem("batchApiUrl");
+const apiUrl = () => localStorage.getItem("apiUrl");
+const batchApiUrl = () => localStorage.getItem("batchApiUrl");
 
 axios.interceptors.response.use(
   (response) => {

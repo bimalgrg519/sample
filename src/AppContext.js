@@ -11,7 +11,7 @@ export const AppContextProvider = ({ children }) => {
   const [isAppLoading, setIsAppLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [isManager, setIsManager] = useState(false);
-  const { instance } = useMsal();
+  const { instance, accounts } = useMsal();
 
   const [userCode, setUserCode] = useState(null);
   const [isMyTimeEntriesSelected, setIsMyTimeEntriesSelected] = useState(false);
@@ -33,13 +33,22 @@ export const AppContextProvider = ({ children }) => {
 
       const url = `${baseUrl}/${msapiVersion}/${tenantID}/${envName}/${appTag}`;
 
-      sessionStorage.setItem("bcToken", access_token);
-      sessionStorage.setItem("apiUrl", `${url}/companies(${COMPANY_ID})`);
-      sessionStorage.setItem("batchApiUrl", url);
+      // handle multiple tab logged out
+      if (
+        localStorage.getItem("loggedOut") &&
+        !sessionStorage.getItem("loggedOut")
+      ) {
+        instance.logoutRedirect();
+        localStorage.clear();
+      } else {
+        localStorage.setItem("bcToken", access_token);
+        localStorage.setItem("apiUrl", `${url}/companies(${COMPANY_ID})`);
+        localStorage.setItem("batchApiUrl", url);
 
-      setInitialLoading(false);
+        setInitialLoading(false);
+      }
     }
-  }, [credentialsFromAzureData]);
+  }, [credentialsFromAzureData, instance]);
 
   if (error) {
     return (
@@ -48,7 +57,7 @@ export const AppContextProvider = ({ children }) => {
         <button
           onClick={() => {
             instance.logoutRedirect();
-            sessionStorage.clear();
+            localStorage.clear();
           }}
           className="btn btn-primary mt-4"
         >
