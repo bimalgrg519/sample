@@ -5,6 +5,7 @@ import InitialLoader from "./Loader/InitialLoader";
 import HeadersTable from "./Table/HeadersTable";
 import LinesTable from "./Table/LinesTable";
 import ConfirmModal from "./ConfirmModal/ConfirmModal";
+import Status from "./Status/Status";
 
 export {
   Modal,
@@ -15,4 +16,5 @@ export {
   HeadersTable,
   LinesTable,
   ConfirmModal,
+  Status,
 };

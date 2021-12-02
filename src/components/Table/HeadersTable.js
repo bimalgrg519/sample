@@ -1,7 +1,8 @@
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Loader } from "..";
+import Loader from "../Loader/Loader";
+import Status from "../Status/Status";
 import { useContextConsumer } from "../../AppContext";
 import { getHours } from "./TableCommon";
 
@@ -66,12 +67,8 @@ export default function HeadersTable({ data, isSuccess }) {
                       ? d.employeeName
                       : d.managerCode}
                   </td>
-                  <td className="py-2 sm:py-3 px-4">
-                    {d.remarks ? (
-                      <span className="text-red-600">Rejected</span>
-                    ) : (
-                      d.status
-                    )}
+                  <td className="py-2 sm:py-3 px-4 flex items-center">
+                    <Status {...d} />
                   </td>
                 </tr>
               );
