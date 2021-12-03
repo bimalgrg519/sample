@@ -44,7 +44,7 @@ export default function Dashboard() {
 
   const { data: employeeHeadersData, isSuccess: isSuccessEmployeeHeaders } =
     useHeaders(
-      `?$filter=employeeCode eq '${userCode}' and startDate ge ${selectedPayPeriod.startDate} and endDate le ${selectedPayPeriod.endDate}`,
+      `?$filter=employeeCode eq '${userCode}' and startDate ge ${selectedPayPeriod.startDate} and startDate le ${selectedPayPeriod.endDate}`,
       {
         enabled: !!Object.keys(selectedPayPeriod).length,
       }
@@ -52,7 +52,7 @@ export default function Dashboard() {
 
   const { data: managerHeadersData, isSuccess: isSuccessManagerHeaders } =
     useHeaders(
-      `?$filter=managerCode eq '${userCode}' and startDate ge ${selectedPayPeriod.startDate} and endDate le ${selectedPayPeriod.endDate}`,
+      `?$filter=managerCode eq '${userCode}' and startDate ge ${selectedPayPeriod.startDate} and startDate le ${selectedPayPeriod.endDate}`,
       {
         enabled: !!Object.keys(selectedPayPeriod).length,
       }
@@ -138,6 +138,7 @@ export default function Dashboard() {
             setSearchText={setSearchText}
             initialHeaderList={initialHeaderList}
             setHeaderList={setHeaderList}
+            isMyTimeEntriesSelected={isMyTimeEntriesSelected}
           />
         </div>
       </div>

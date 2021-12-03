@@ -7,6 +7,7 @@ export default function SearchBar({
   initialHeaderList,
   searchText,
   setSearchText,
+  isMyTimeEntriesSelected,
 }) {
   const { isManager } = useContextConsumer();
 
@@ -20,13 +21,13 @@ export default function SearchBar({
     );
   };
 
-  if (isManager) {
+  if (isManager && !isMyTimeEntriesSelected) {
     return (
       <div className="flex items-center border border-blue-200 h-10 px-4 rounded-sm w-72 md:-mt-4 mb-4">
         <IoSearchOutline size={20} />
         <input
           className="w-full h-full focus:outline-none pl-2"
-          placeholder="Search"
+          placeholder="Search Employee"
           value={searchText}
           onChange={handleSearch}
         />
